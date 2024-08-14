@@ -1,38 +1,29 @@
 package com.epam.pablo.dto;
 
-public class BankCard {
-    private String number;
-    private User user;
+import java.util.Objects;
 
-    // Default constructor
+public class BankCard {
+    private final String number;
+    private final User user;
+
     public BankCard() {
+        this.number = null;
+        this.user = null;
     }
 
-    // Parameterized constructor
     public BankCard(String number, User user) {
         this.number = number;
         this.user = user;
     }
 
-    // Getter and setter for number
     public String getNumber() {
         return number;
     }
 
-    public void setNumber(String number) {
-        this.number = number;
-    }
-
-    // Getter and setter for user
     public User getUser() {
         return user;
     }
 
-    public void setUser(User user) {
-        this.user = user;
-    }
-
-    // Override toString method
     @Override
     public String toString() {
         return "BankCard{" +
@@ -41,19 +32,17 @@ public class BankCard {
                 '}';
     }
 
-    // Override equals method
     @Override
     public boolean equals(Object o) {
         if (this == o) return true;
         if (o == null || getClass() != o.getClass()) return false;
-        BankCard bankCard = (BankCard) o;
-        return number.equals(bankCard.number) &&
-                user.equals(bankCard.user);
+        var bankCard = (BankCard) o;
+        return Objects.equals(number, bankCard.number) &&
+                Objects.equals(user, bankCard.user);
     }
 
-    // Override hashCode method
     @Override
     public int hashCode() {
-        return java.util.Objects.hash(number, user);
+        return Objects.hash(number, user);
     }
 }

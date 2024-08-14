@@ -1,3 +1,3 @@
-module com.epam.pablo.jmp.dto {
+module jmp.dto {
     exports com.epam.pablo.dto;
 }

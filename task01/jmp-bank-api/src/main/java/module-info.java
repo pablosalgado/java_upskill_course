@@ -1,4 +1,4 @@
-module com.epam.pablo.jmp.bank.api {
-    requires com.epam.pablo.jmp.dto;
+module jmp.bank.api {
+    requires transitive jmp.dto;
     exports com.epam.pablo.bank.api;
 }
