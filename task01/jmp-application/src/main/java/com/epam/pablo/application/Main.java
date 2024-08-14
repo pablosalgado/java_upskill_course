@@ -5,6 +5,9 @@ import com.epam.pablo.cloud.bank.impl.InvestmentBank;
 import com.epam.pablo.cloud.bank.impl.RetailBank;
 import com.epam.pablo.dto.*;
 import com.epam.pablo.cloud.service.impl.ServiceImpl;
+import com.epam.pablo.service.api.SubscriptionNotFoundException;
+import java.util.function.Predicate;
+import java.util.List;
 
 import java.time.LocalDate;
 
@@ -17,12 +20,15 @@ public class Main {
         var userJohnDoe = new User("John", "Doe", LocalDate.of(1990, 1, 1));
         var userJohnDoeCard = centralBank.createBankCard(userJohnDoe, BankCardType.CREDIT);
 
-        var userJaneDoe = new User("Jane", "Doe", LocalDate.of(1995, 1, 1));
+        var userJaneDoe = new User("Jane", "Doe", LocalDate.of(1995, 2, 2));
         var userJaneDoeCard1 = investmentBank.createBankCard(userJaneDoe, BankCardType.DEBIT);
         var userJaneDoeCard2 = centralBank.createBankCard(userJaneDoe, BankCardType.CREDIT);
 
-        var userAliceSmith = new User("Alice", "Smith", LocalDate.of(2000, 1, 1));
+        var userAliceSmith = new User("Alice", "Smith", LocalDate.of(2000, 3, 10));
         var userAliceSmithCard = retailBank.createBankCard(userAliceSmith, BankCardType.CREDIT);
+
+        var userBobSmith = new User("Bob", "Smith", LocalDate.of(2010, 11, 3));
+        var userBobSmithCard = retailBank.createBankCard(userBobSmith, BankCardType.DEBIT);
 
         var service = new ServiceImpl();
 
@@ -30,19 +36,51 @@ public class Main {
         service.subscribe(userJaneDoeCard1);
         service.subscribe(userJaneDoeCard2);
         service.subscribe(userAliceSmithCard);
+        service.subscribe(userBobSmithCard);
 
-        service.getSubscriptionByBankCardNumber(userJohnDoeCard.getNumber())
-                .ifPresent(subscription -> System.out.println("Central Bank Card Subscription: " + subscription));
-        service.getSubscriptionByBankCardNumber(userJaneDoeCard1.getNumber())
-                .ifPresent(subscription -> System.out.println("Investment Bank Card Subscription: " + subscription));
-        service.getSubscriptionByBankCardNumber(userJaneDoeCard2.getNumber())
-                .ifPresent(subscription -> System.out.println("Central Bank Card Subscription: " + subscription));
-        service.getSubscriptionByBankCardNumber(userAliceSmithCard.getNumber())
-                .ifPresent(subscription -> System.out.println("Retail Bank Card Subscription: " + subscription));
+        try {
+            service.getSubscriptionByBankCardNumber(userJohnDoeCard.getNumber())
+                    .ifPresent(subscription -> System.out.println("Central Bank Card Subscription: " + subscription));
+            service.getSubscriptionByBankCardNumber(userJaneDoeCard1.getNumber())
+                    .ifPresent(subscription -> System.out.println("Investment Bank Card Subscription: " + subscription));
+            service.getSubscriptionByBankCardNumber(userJaneDoeCard2.getNumber())
+                    .ifPresent(subscription -> System.out.println("Central Bank Card Subscription: " + subscription));
+            service.getSubscriptionByBankCardNumber(userAliceSmithCard.getNumber())
+                    .ifPresent(subscription -> System.out.println("Retail Bank Card Subscription: " + subscription));
+            service.getSubscriptionByBankCardNumber(userBobSmithCard.getNumber())
+                    .ifPresent(subscription -> System.out.println("Retail Bank Card Subscription: " + subscription));
+        } catch (SubscriptionNotFoundException ignored) {
+        } finally {
+            System.out.println("All subscriptions are valid.\n");
+        }
+
+
+        try {
+            service.getSubscriptionByBankCardNumber("1234567890");
+        } catch (SubscriptionNotFoundException e) {
+            System.out.println("Non-existent card subscription number 1234567890 not found.\n");
+        }
 
         System.out.println("All users:");
         service.getAllUsers().forEach(System.out::println);
+        System.out.println();
 
-        System.out.println("Demonstration complete!");
+        System.out.printf("Average users age: %.2f years.\n\n", service.getAverageUsersAge());
+
+        System.out.println("Is John Doe payable user: " + service.isPayableUser(userJohnDoe));
+        System.out.println("Is Jane Doe payable user: " + service.isPayableUser(userJaneDoe));
+        System.out.println("Is Alice Smith payable user: " + service.isPayableUser(userAliceSmith));
+        System.out.println("Is Bob Smith payable user: " + service.isPayableUser(userBobSmith));
+        System.out.println();
+
+        Predicate<Subscription> predicate = subscription ->
+                subscription.getBankcardNumber().startsWith("3333");
+
+        List<Subscription> activeSubscriptions = service.getAllSubscriptionsByCondition(predicate);
+
+        activeSubscriptions.forEach(subscription ->
+                System.out.println("Active Subscription: " + subscription.getBankcardNumber()));
+
+        System.out.println("\nDemonstration complete!");
     }
 }

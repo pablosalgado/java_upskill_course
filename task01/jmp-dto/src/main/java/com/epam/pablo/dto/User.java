@@ -1,6 +1,7 @@
 package com.epam.pablo.dto;
 
 import java.time.LocalDate;
+import java.time.temporal.ChronoUnit;
 
 public class User {
     private String name;
@@ -62,5 +63,9 @@ public class User {
     @Override
     public int hashCode() {
         return java.util.Objects.hash(name, surname, birthday);
+    }
+
+    public long getAge() {
+        return ChronoUnit.YEARS.between(birthday, LocalDate.now());
     }
 }
