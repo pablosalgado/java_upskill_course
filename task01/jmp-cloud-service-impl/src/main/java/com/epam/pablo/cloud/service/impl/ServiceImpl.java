@@ -16,6 +16,9 @@ public class ServiceImpl implements Service {
     private final List<Subscription> subscriptions = new ArrayList<>();
     private final Map<Integer, User> users = new HashMap<>();
 
+    public ServiceImpl() {
+    }
+
     @Override
     public void subscribe(BankCard card) {
         users.put(card.getUser().hashCode(), card.getUser());
