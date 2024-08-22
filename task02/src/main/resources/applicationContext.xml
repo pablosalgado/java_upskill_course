@@ -1,0 +1,27 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans"
+       xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+       xmlns:context="http://www.springframework.org/schema/context"
+       xsi:schemaLocation="
+           http://www.springframework.org/schema/beans
+           http://www.springframework.org/schema/beans/spring-beans.xsd
+           http://www.springframework.org/schema/context
+           http://www.springframework.org/schema/context/spring-context.xsd">
+    <context:component-scan base-package="com.epam.pablo"/>
+
+    <bean id="storage" class="com.epam.pablo.storage.impl.StorageImpl"/>
+
+    <bean id="bookingFacade" class="com.epam.pablo.facade.impl.BookingFacadeImpl">
+        <constructor-arg ref="eventService"/>
+        <constructor-arg ref="ticketService"/>
+        <constructor-arg ref="userService"/>
+    </bean>
+
+    <bean id="event" class="com.epam.pablo.entity.impl.EventImpl" scope="prototype"/>
+    <bean id="ticket" class="com.epam.pablo.entity.impl.TicketImpl" scope="prototype"/>
+    <bean id="user" class="com.epam.pablo.entity.impl.UserImpl" scope="prototype"/>
+
+    <bean id="eventService" class="com.epam.pablo.service.impl.EventServiceImpl"/>
+    <bean id="ticketService" class="com.epam.pablo.service.impl.TicketServiceImpl"/>
+    <bean id="userService" class="com.epam.pablo.service.impl.UserServiceImpl"/>
+</beans>
