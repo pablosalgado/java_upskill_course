@@ -1,1 +1,5 @@
-/.idea/
+.idea/
+.DS_Store
+.vscode
+.history/
+.mvn/

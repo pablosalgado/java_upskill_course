@@ -1,0 +1,155 @@
+{
+    "concurrency": 10,
+    "tableConfigList": [
+        {
+            "columnCount": 1,
+            "typeCount": 1,
+            "rowCount": 10000
+        },
+        {
+            "columnCount": 2,
+            "typeCount": 2,
+            "rowCount": 20000
+        },
+        {
+            "columnCount": 3,
+            "typeCount": 3,
+            "rowCount": 30000
+        },
+        {
+            "columnCount": 4,
+            "typeCount": 4,
+            "rowCount": 40000
+        },
+        {
+            "columnCount": 5,
+            "typeCount": 5,
+            "rowCount": 50000
+        },
+        {
+            "columnCount": 6,
+            "typeCount": 6,
+            "rowCount": 60000
+        },
+        {
+            "columnCount": 7,
+            "typeCount": 7,
+            "rowCount": 70000
+        },
+        {
+            "columnCount": 8,
+            "typeCount": 8,
+            "rowCount": 80000
+        },
+        {
+            "columnCount": 9,
+            "typeCount": 9,
+            "rowCount": 90000
+        },
+        {
+            "columnCount": 10,
+            "typeCount": 10,
+            "rowCount": 100000
+        },
+        {
+            "columnCount": 11,
+            "typeCount": 11,
+            "rowCount": 110000
+        },
+        {
+            "columnCount": 12,
+            "typeCount": 12,
+            "rowCount": 120000
+        },
+        {
+            "columnCount": 13,
+            "typeCount": 13,
+            "rowCount": 130000
+        },
+        {
+            "columnCount": 14,
+            "typeCount": 14,
+            "rowCount": 140000
+        },
+        {
+            "columnCount": 15,
+            "typeCount": 13,
+            "rowCount": 150000
+        },
+        {
+            "columnCount": 16,
+            "typeCount": 14,
+            "rowCount": 160000
+        },
+        {
+            "columnCount": 17,
+            "typeCount": 13,
+            "rowCount": 170000
+        },
+        {
+            "columnCount": 18,
+            "typeCount": 14,
+            "rowCount": 180000
+        },
+        {
+            "columnCount": 19,
+            "typeCount": 13,
+            "rowCount": 190000
+        },
+        {
+            "columnCount": 20,
+            "typeCount": 12,
+            "rowCount": 200000
+        },
+        {
+            "columnCount": 21,
+            "typeCount": 11,
+            "rowCount": 210000
+        },
+        {
+            "columnCount": 22,
+            "typeCount": 10,
+            "rowCount": 220000
+        },
+        {
+            "columnCount": 23,
+            "typeCount": 9,
+            "rowCount": 230000
+        },
+        {
+            "columnCount": 24,
+            "typeCount": 8,
+            "rowCount": 240000
+        },
+        {
+            "columnCount": 25,
+            "typeCount": 7,
+            "rowCount": 250000
+        },
+        {
+            "columnCount": 26,
+            "typeCount": 6,
+            "rowCount": 260000
+        },
+        {
+            "columnCount": 27,
+            "typeCount": 5,
+            "rowCount": 270000
+        },
+        {
+            "columnCount": 28,
+            "typeCount": 4,
+            "rowCount": 280000
+        },
+        {
+            "columnCount": 29,
+            "typeCount": 3,
+            "rowCount": 290000
+        },
+        {
+            "columnCount": 30,
+            "typeCount": 2,
+            "rowCount": 300000
+        }
+    ]
+}
