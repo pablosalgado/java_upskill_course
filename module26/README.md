@@ -1,37 +1,45 @@
-# Task 1 - SpringJDBC-based Social Network
-## Run the application
+# Content
+- [Task 1 - SpringJDBC-based Social Network](#task-1---springjdbc-based-social-network)
+- [Task 2 - Highload Writing Console Tool](#task-2---highload-writing-console-tool)
+- [Task 7 - File Sharing](#task-7---file-sharing)
+ 
+## Task 1 - SpringJDBC-based Social Network
+### Database Configuration
 
-Default configured database is H2:
+The default configured database is H2, which requires no further adjustments.
 
-```
+### Run the Application
+
+Execute the following commands to create the database schema, populate some data, and generate a report in the console:
+
+```bash
 cd task01
 mvn clean install
 mvn spring-boot:run
 ```
 
-# Task 2 - Highload Writing Console Tool
+## Task 2 - Highload Writing Console Tool
+### Database Configuration
 
-## Database configuration
+The default database is PostgreSQL with the `dev` profile. Navigate to the following file to view or modify the configuration:
 
-Default configured database is PostgreSQL with the `dev` profile:
-
-```
-cd task02
-src/main/resources/application-dev.properties
+```bash
+task02/src/main/resources/application-dev.properties
 ```
 
-## Application configuration
+Please ensure to create the database named `module26_task02`.
 
-The application configuration is done via a JSON file:
+### Application Configuration
 
-```
-cd task02
-config.json
-```
-
-Schema as follows:
+The application's configuration is managed via a JSON file located at:
 
 ```
+task02/config.json
+```
+
+The JSON schema is as follows:
+
+```json
 {
   "$schema": "http://json-schema.org/draft-07/schema#",
   "type": "object",
@@ -77,9 +85,34 @@ Schema as follows:
 This structure allows users to define multiple table configurations, each specifying the schema and size of the table, which can be processed using the specified level of concurrency.
 
 
-## Run the application
-```
+### Run the application
+```bash
 cd task02
 mvn clean install
 mvn spring-boot:run
 ```
+
+## Task 7 - File Sharing
+### Database Configuration
+
+The default configured database is PostgreSQL. Please create the database named `module26_task07`.
+
+### Run the Application
+
+
+Execute the following commands to create the database schema, populate some data, and start the application:
+
+```bash
+cd task07
+mvn clean install
+java -jar target/task07-1.0.0.jar file.txt 
+```
+
+To upload a local file, use:
+
+```
+java -jar target/task07-1.0.0.jar path/to/your/file
+```
+
+The schema created is displayed in the following diagram: 
+![schema](./task07/diagram.png)
