@@ -45,8 +45,6 @@ public class Task01Application implements CommandLineRunner {
 
 	@Override
 	public void run(String... args) throws Exception {
-		System.out.println("Hello, Spring Boot!");
-
 		createUsers();
 		createEvents();
 		bookTickets();
@@ -118,14 +116,14 @@ public class Task01Application implements CommandLineRunner {
 		System.out.println("\n\n----------------------------------------");
 		System.out.println("John Doe booking tickets...");
 		System.out.println(
-				"John Doe initial account balance: " + bookingFacade.getUserById(johnDoe.getId()).getAccountBalance());
+				"John Doe initial account balance: $" + bookingFacade.getUserById(johnDoe.getId()).getAccountBalance());
 		System.out.printf("John Doe wants to book a ticket for the %s at $%s%n", conference.getTitle(),
 				conference.getTicketPrice().toString());
 
 		bookingFacade.bookTicket(johnDoe.getId(), conference.getId(), 1, Ticket.Category.PREMIUM);
 
 		System.out.println("Ticket booked.");
-		System.out.println("John Doe account balance after booking: "
+		System.out.println("John Doe account balance after booking: $"
 				+ bookingFacade.getUserById(johnDoe.getId()).getAccountBalance());
 
 		try {
@@ -138,7 +136,7 @@ public class Task01Application implements CommandLineRunner {
 
 		System.out.println("\n\n----------------------------------------");
 		System.out.println("Jane Smith booking tickets...");
-		System.out.println("Jane Smith initial account balance: "
+		System.out.println("Jane Smith initial account balance: $"
 				+ bookingFacade.getUserById(janeSmith.getId()).getAccountBalance());
 		System.out.printf("Jane Smith wants to book a ticket for the %s at $%s%n", workshop.getTitle(),
 				workshop.getTicketPrice().toString());
@@ -150,7 +148,7 @@ public class Task01Application implements CommandLineRunner {
 
 		System.out.println("\n\n----------------------------------------");
 		System.out.println("Alice Johnson booking tickets...");
-		System.out.println("Alice Johnson initial account balance: "
+		System.out.println("Alice Johnson initial account balance: $"
 				+ bookingFacade.getUserById(aliceJohnson.getId()).getAccountBalance());
 		System.out.printf("Alice Johnson wants to book a ticket for the %s at $%s%n", seminar.getTitle(),
 				seminar.getTicketPrice().toString());
@@ -158,19 +156,19 @@ public class Task01Application implements CommandLineRunner {
 		var ticket = bookingFacade.bookTicket(aliceJohnson.getId(), seminar.getId(), 3, Ticket.Category.STANDARD);
 
 		System.out.println("Ticket booked.");
-		System.out.println("Alice Johnson account balance after booking: "
+		System.out.println("Alice Johnson account balance after booking: $"
 				+ bookingFacade.getUserById(aliceJohnson.getId()).getAccountBalance());
 		System.out.println("Alice Johnson  wants to cancel the ticket...");
 
 		bookingFacade.cancelTicket(ticket.getId());
 
 		System.out.println("Ticket canceled.");
-		System.out.println("Alice Johnson account balance after canceling: "
+		System.out.println("Alice Johnson account balance after canceling: $"
 				+ bookingFacade.getUserById(aliceJohnson.getId()).getAccountBalance());
 
 		System.out.println("\n\n----------------------------------------");
 		System.out.println("Bob Brown booking tickets...");
-		System.out.println("Bob Brown initial account balance: "
+		System.out.println("Bob Brown initial account balance: $"
 				+ bookingFacade.getUserById(bobBrown.getId()).getAccountBalance());
 		System.out.printf("Bob Brown wants to book a ticket for the %s at $%s%n", webinar.getTitle(),
 				webinar.getTicketPrice().toString());
@@ -178,13 +176,13 @@ public class Task01Application implements CommandLineRunner {
 		bookingFacade.bookTicket(bobBrown.getId(), webinar.getId(), 4, Ticket.Category.PREMIUM);
 
 		System.out.println("Ticket booked.");
-		System.out.println("Bob Brown account balance after booking: "
+		System.out.println("Bob Brown account balance after booking: $"
 				+ bookingFacade.getUserById(bobBrown.getId()).getAccountBalance());
 		System.out.println("Bob Brown wants to refill the account balance with $100...");
 
 		bookingFacade.refillAccount(bobBrown.getId(), BigDecimal.valueOf(100));
 
-		System.out.println("Bob Brown account balance after refill: "
+		System.out.println("Bob Brown account balance after refill: $"
 				+ bookingFacade.getUserById(bobBrown.getId()).getAccountBalance());
 		System.out.println("Tickets booked.");
 	}
