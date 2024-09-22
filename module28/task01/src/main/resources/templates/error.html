@@ -1,0 +1,12 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <title>Error Page</title>
+</head>
+<body>
+<h1>Error Occurred</h1>
+<p>Error Message: <span th:text="${errorMessage}"></span></p>
+<h2>Stack Trace:</h2>
+<pre th:text="${stackTrace}"></pre>
+</body>
+</html>

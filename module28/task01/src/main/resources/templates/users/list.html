@@ -1,0 +1,47 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <title>Users</title>
+    <link href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css" rel="stylesheet">
+</head>
+<body>
+<div class="container mt-3">
+    <h1>Users</h1>
+    <a th:href="@{/users/new}" class="btn btn-primary mb-3">Create New User</a>
+    <table class="table">
+        <thead>
+            <tr>
+                <th>ID</th>
+                <th>Name</th>
+                <th>Email</th>
+                <th>Actions</th>
+            </tr>
+        </thead>
+        <tbody>
+            <tr th:each="user : ${users}">
+                <td th:text="${user.id}"></td>
+                <td><a th:href="@{/users/{id}(id=${user.id})}" th:text="${user.name}"></a></td>
+                <td th:text="${user.email}"></td>
+                <td>
+                    <a th:href="@{/users/edit/{id}(id=${user.id})}" class="btn btn-info">Edit</a>
+                    <a th:href="@{/users/delete/{id}(id=${user.id})}" class="btn btn-danger">Delete</a>
+                </td>
+            </tr>
+        </tbody>
+    </table>
+</div>
+<div>
+    <ul class="pagination">
+        <li th:classappend="${currentPage == 0} ? 'disabled' : ''" class="page-item">
+            <a th:href="@{/users(page=${currentPage - 1}, size=${size})}" class="page-link">Previous</a>
+        </li>
+        <li th:each="i : ${#numbers.sequence(0, totalPages - 1)}" th:classappend="${i == currentPage} ? 'active' : ''" class="page-item">
+            <a th:href="@{/users(page=${i}, size=${size})}" th:text="${i + 1}" class="page-link"></a>
+        </li>
+        <li th:classappend="${currentPage + 1 == totalPages} ? 'disabled' : ''" class="page-item">
+            <a th:href="@{/users(page=${currentPage + 1}, size=${size})}" class="page-link">Next</a>
+        </li>
+    </ul>
+</div>
+</body>
+</html>
