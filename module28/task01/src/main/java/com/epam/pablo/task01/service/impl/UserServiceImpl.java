@@ -105,6 +105,6 @@ public class UserServiceImpl implements UserService {
     public Page<User> getAllUsers(int pageSize, int pageNum) {
         logger.debug("Fetching all users");
         Pageable pageable = PageRequest.of(pageNum, pageSize);
-        return userRepository.findAll(pageable);
+        return userRepository.findAllWithUserAccount(pageable);
     }
 }

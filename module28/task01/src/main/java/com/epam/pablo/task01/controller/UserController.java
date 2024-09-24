@@ -1,5 +1,7 @@
 package com.epam.pablo.task01.controller;
 
+import java.math.BigDecimal;
+
 import org.springframework.data.domain.Page;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -70,5 +72,11 @@ public class UserController {
     public String deleteUser(@PathVariable Long id) {
         bookingFacade.deleteUser(id);
         return "redirect:/users";
+    }
+
+    @PostMapping("/{id}/refill")
+    public String refillAccount(@PathVariable Long id, @RequestParam String amount) {
+        bookingFacade.refillAccount(id, BigDecimal.valueOf(Double.parseDouble(amount)));
+        return "redirect:/users/edit/" + id;
     }
 }

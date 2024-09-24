@@ -9,6 +9,7 @@ import java.math.BigDecimal;
 import java.util.Date;
 import java.util.List;
 
+import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.CommandLineRunner;
@@ -22,6 +23,9 @@ import com.epam.pablo.task01.model.Ticket;
 import com.epam.pablo.task01.model.User;
 import com.epam.pablo.task01.model.factory.EventFactory;
 import com.epam.pablo.task01.model.factory.UserFactory;
+import com.epam.pablo.task01.repository.EventRepository;
+import com.epam.pablo.task01.repository.TicketRepository;
+import com.epam.pablo.task01.repository.UserRepository;
 
 @SpringBootTest
 class BookingIntegrationTest {
@@ -37,6 +41,22 @@ class BookingIntegrationTest {
 
     @Autowired
     private UserFactory userFactory;
+
+    @Autowired
+    private UserRepository userRepository;
+
+    @Autowired
+    private EventRepository eventRepository;
+
+    @Autowired
+    private TicketRepository ticketRepository;
+
+    @BeforeEach
+    public void setUp() {
+        ticketRepository.deleteAll();
+        eventRepository.deleteAll();
+        userRepository.deleteAll();
+    }
 
     @Test
     public void testCreateAndRetrieveEvent() {
