@@ -65,6 +65,15 @@ public interface BookingFacade {
     Event updateEvent(Event event);
 
     /**
+     * Updates event using given data.
+     * 
+     * @param id    Event id.
+     * @param event Event data for update.
+     * @return Updated Event object.
+     */
+    Event updateEvent(Long id, Event event);
+
+    /**
      * Deletes event by its id.
      * 
      * @param eventId Event id.
@@ -194,4 +203,13 @@ public interface BookingFacade {
      */
     Page<User> getAllUsers(int pageSize, int pageNum);
 
+    /**
+     * Get all events.
+     * 
+     * @param pageSize Pagination param. Number of events to return on a page.
+     * @param pageNum  Pagination param. Number of the page to return. Starts from
+     *                 1.
+     * @return List of Event objects.
+     */
+    Page<Event> getAllEvents(int pageSize, int pageNum);
 }

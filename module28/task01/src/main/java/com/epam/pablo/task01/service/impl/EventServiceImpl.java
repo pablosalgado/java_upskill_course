@@ -6,6 +6,7 @@ import java.util.List;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
@@ -80,5 +81,13 @@ public class EventServiceImpl implements EventService {
         }
         logger.warn("Attempted to delete non-existing event with ID: {}", eventId);
         return false;
+    }
+
+    @Override
+    @Transactional(readOnly = true)
+    public Page<Event> getAllEvents(int pageSize, int pageNum) {
+        logger.debug("Fetching all events, page size: {}, page number: {}", pageSize, pageNum);
+        Pageable pageable = PageRequest.of(pageNum, pageSize);
+        return eventRepository.findAll(pageable);
     }
 }

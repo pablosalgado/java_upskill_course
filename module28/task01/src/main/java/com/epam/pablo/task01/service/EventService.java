@@ -3,6 +3,8 @@ package com.epam.pablo.task01.service;
 import java.util.Date;
 import java.util.List;
 
+import org.springframework.data.domain.Page;
+
 import com.epam.pablo.task01.model.Event;
 
 public interface EventService {
@@ -18,5 +20,7 @@ public interface EventService {
     Event updateEvent(Event event);
 
     boolean deleteEvent(long eventId);
+
+    Page<Event> getAllEvents(int pageSize, int pageNum);
 
 }

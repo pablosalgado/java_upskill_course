@@ -54,6 +54,15 @@ public class BookingFacadeImpl implements BookingFacade {
     }
 
     @Override
+    public Event updateEvent(Long id, Event event) {
+        var eventToUpdate = getEventById(id);
+        eventToUpdate.setTitle(event.getTitle());
+        eventToUpdate.setDate(event.getDate());
+        eventToUpdate.setTicketPrice(event.getTicketPrice());
+        return updateEvent(eventToUpdate);
+    }
+
+    @Override
     public boolean deleteEvent(long eventId) {
         return eventService.deleteEvent(eventId);
     }
@@ -126,4 +135,8 @@ public class BookingFacadeImpl implements BookingFacade {
         return userService.getAllUsers(pageSize, pageNum);
     }
 
+    @Override
+    public Page<Event> getAllEvents(int pageSize, int pageNum) {
+        return eventService.getAllEvents(pageSize, pageNum);
+    }
 }
