@@ -93,13 +93,14 @@ class BookingFacadeImplTest {
 
     @Test
     void testUpdateEvent() {
-        Event event = new Event();
-        when(eventService.updateEvent(event)).thenReturn(event);
+        Event eventToUpdate = new Event();
+        Event updatedEvent = new Event();
+        when(eventService.updateEvent(eventToUpdate.getId(), eventToUpdate)).thenReturn(updatedEvent);
 
-        Event result = bookingFacade.updateEvent(event);
+        Event result = bookingFacade.updateEvent(eventToUpdate.getId(), eventToUpdate);
 
-        verify(eventService).updateEvent(event);
-        assertSame(event, result);
+        verify(eventService).updateEvent(eventToUpdate.getId(), eventToUpdate);
+        assertSame(updatedEvent, result);
     }
 
     @Test
@@ -164,13 +165,15 @@ class BookingFacadeImplTest {
 
     @Test
     void testUpdateUser() {
-        User user = new User();
-        when(userService.updateUser(user)).thenReturn(user);
+        var userToUpdate = new User();
+        var updatedUser = new User();
 
-        User result = bookingFacade.updateUser(user);
+        when(userService.updateUser(userToUpdate.getId(), userToUpdate)).thenReturn(updatedUser);
 
-        verify(userService).updateUser(user);
-        assertSame(user, result);
+        User result = bookingFacade.updateUser(userToUpdate.getId(), userToUpdate);
+
+        verify(userService).updateUser(userToUpdate.getId(), userToUpdate);
+        assertSame(updatedUser, result);
     }
 
     @Test

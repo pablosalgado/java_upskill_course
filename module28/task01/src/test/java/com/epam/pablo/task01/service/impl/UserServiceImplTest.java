@@ -1,6 +1,8 @@
 package com.epam.pablo.task01.service.impl;
 
 import static org.junit.jupiter.api.Assertions.*;
+import static org.mockito.ArgumentMatchers.any;
+import static org.mockito.ArgumentMatchers.eq;
 import static org.mockito.Mockito.*;
 
 import java.math.BigDecimal;
@@ -17,6 +19,7 @@ import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageImpl;
 import org.springframework.data.domain.PageRequest;
 
+import com.epam.pablo.task01.exception.UserNotFoundException;
 import com.epam.pablo.task01.model.User;
 import com.epam.pablo.task01.repository.UserRepository;
 
@@ -71,23 +74,37 @@ public class UserServiceImplTest {
     }
 
     @Test
-    public void testUpdateUser() {
-        User user = new User();
-        user.setId(1L);
-        when(userRepository.existsById(1L)).thenReturn(true);
-        when(userRepository.save(user)).thenReturn(user);
-        User result = userService.updateUser(user);
-        verify(userRepository).save(user);
-        assertEquals(user, result);
+    public void testUpdateUserSuccess() {
+        var updatedUser = new User();
+        updatedUser.setName("New Name");
+        updatedUser.setEmail("newemail@example.com");
+        updatedUser.addFundsToAccount(BigDecimal.valueOf(100));
+
+        var existingUser = new User();
+        existingUser.setName("Old Name");
+        existingUser.setEmail("oldemail@example.com");
+        existingUser.addFundsToAccount(BigDecimal.TEN);        
+
+        when(userRepository.findById(1L)).thenReturn(Optional.of(existingUser));
+        when(userRepository.save(existingUser)).thenReturn(existingUser);
+
+        var result = userService.updateUser(1L, updatedUser);
+
+        assertNotNull(result);
+        assertEquals("New Name", existingUser.getName());      
+        assertEquals("newemail@example.com", existingUser.getEmail());
+        assertEquals(BigDecimal.TEN, existingUser.getAccountBalance());  
+        assertSame(result, existingUser);
+        verify(userRepository).save(existingUser);
     }
 
     @Test
     public void testUpdateUserNotFound() {
-        User user = new User();
-        user.setId(1L);
-        when(userRepository.existsById(1L)).thenReturn(false);
-        User result = userService.updateUser(user);
-        assertNull(result);
+        when(userRepository.findById(1L)).thenReturn(Optional.empty());
+
+        assertThrows(UserNotFoundException.class, () -> {
+            userService.updateUser(1L, new User());
+        });
     }
 
     @Test

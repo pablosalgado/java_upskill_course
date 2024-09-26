@@ -1,6 +1,8 @@
 <!DOCTYPE html>
-<html xmlns:th="http://www.thymeleaf.org">
+<html xmlns:th="http://www.thymeleaf.org" lang="en">
 <head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Events</title>
     <link href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css" rel="stylesheet">
 </head>
@@ -22,8 +24,8 @@
             <tr th:each="event : ${events}">
                 <td th:text="${event.id}"></td>
                 <td><a th:href="@{/events/{id}(id=${event.id})}" th:text="${event.title}"></a></td>
-                <td th:text="${#dates.format(event.date, 'yyyy-MM-dd HH:mm:ss')}"></td>
-                <td th:text="'$'+ ${#numbers.formatDecimal(event.price, 1, 'COMMA', 2, 'POINT')}" class="text-right"></td>
+                <td th:text="${#temporals.format(event.date, 'yyyy-MM-dd HH:mm')}"></td>
+                <td th:text="'$'+ ${#numbers.formatDecimal(event.ticketPrice, 1, 'COMMA', 2, 'POINT')}" class="text-right"></td>
                 <td>
                     <a th:href="@{/events/edit/{id}(id=${event.id})}" class="btn btn-info">Edit</a>
                     <a th:href="@{/events/delete/{id}(id=${event.id})}" class="btn btn-danger">Delete</a>

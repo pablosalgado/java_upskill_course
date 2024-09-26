@@ -6,7 +6,7 @@ import static org.junit.jupiter.api.Assertions.assertThrows;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 
 import java.math.BigDecimal;
-import java.util.Date;
+import java.time.LocalDateTime;
 import java.util.List;
 
 import org.junit.jupiter.api.BeforeEach;
@@ -60,7 +60,7 @@ class BookingIntegrationTest {
 
     @Test
     public void testCreateAndRetrieveEvent() {
-        Event createdEvent = createEvent("Test Event", new Date());
+        Event createdEvent = createEvent("Test Event", LocalDateTime.now());
 
         Event retrievedEvent = bookingFacade.getEventById(createdEvent.getId());
 
@@ -81,7 +81,7 @@ class BookingIntegrationTest {
     @Test
     public void testBookTicketWhenUserHasEnoughMoney() {
         User createdUser = createUser("Jane Doe", "jane.doe@example.com", BigDecimal.valueOf(100));
-        Event createdEvent = createEvent("Concert", new Date(), BigDecimal.valueOf(50));
+        Event createdEvent = createEvent("Concert", LocalDateTime.now(), BigDecimal.valueOf(50));
 
         Ticket ticket = bookingFacade.bookTicket(createdUser.getId(), createdEvent.getId(), 1, Ticket.Category.PREMIUM);
 
@@ -92,7 +92,7 @@ class BookingIntegrationTest {
     @Test
     public void testBookTicketWhenUserHasInsufficientMoney() {
         User createdUser = createUser("Jane Doe", "jane.doe@example.com", BigDecimal.TEN);
-        Event createdEvent = createEvent("Concert", new Date(), BigDecimal.valueOf(50));
+        Event createdEvent = createEvent("Concert", LocalDateTime.now(), BigDecimal.valueOf(50));
 
         assertThrows(Exception.class, () -> {
             bookingFacade.bookTicket(createdUser.getId(), createdEvent.getId(), 1, Ticket.Category.PREMIUM);
@@ -102,7 +102,7 @@ class BookingIntegrationTest {
     @Test
     public void testBookAndCancelTicket() {
         User createdUser = createUser("Jane Doe", "jane.doe@example.com", BigDecimal.valueOf(100));
-        Event createdEvent = createEvent("Concert", new Date(), BigDecimal.valueOf(50));
+        Event createdEvent = createEvent("Concert", LocalDateTime.now(), BigDecimal.valueOf(50));
 
         Ticket ticket = bookingFacade.bookTicket(createdUser.getId(), createdEvent.getId(), 1, Ticket.Category.PREMIUM);
         assertNotNull(ticket);
@@ -118,7 +118,7 @@ class BookingIntegrationTest {
     @Test
     public void testGetBookedTickets() {
         User createdUser = createUser("Alice", "alice@example.com");
-        Event createdEvent = createEvent("Seminar", new Date());
+        Event createdEvent = createEvent("Seminar", LocalDateTime.now());
 
         bookingFacade.bookTicket(createdUser.getId(), createdEvent.getId(), 1, Ticket.Category.STANDARD);
         bookingFacade.bookTicket(createdUser.getId(), createdEvent.getId(), 2, Ticket.Category.STANDARD);
@@ -130,7 +130,7 @@ class BookingIntegrationTest {
     @Test
     void shouldBookAndCancelTicketSuccessfully() {
         User user = createUser("John Doe", "john.doe@example.com");
-        Event event = createEvent("Concert", new Date());
+        Event event = createEvent("Concert", LocalDateTime.now());
 
         Ticket ticket = bookingFacade.bookTicket(user.getId(), event.getId(), 1, Ticket.Category.PREMIUM);
 
@@ -154,9 +154,8 @@ class BookingIntegrationTest {
     @Test
     void shouldUpdateUserSuccessfully() {
         User user = createUser("Alice Smith", "alice.smith@example.com");
-
         user.setName("John Johnson");
-        User updatedUser = bookingFacade.updateUser(user);
+        User updatedUser = bookingFacade.updateUser(user.getId(), user);
 
         assertEquals("John Johnson", updatedUser.getName(), "User name should be updated");
     }
@@ -187,12 +186,12 @@ class BookingIntegrationTest {
         return bookingFacade.createUser(user);
     }
 
-    private Event createEvent(String title, Date date) {
+    private Event createEvent(String title, LocalDateTime date) {
         Event event = eventFactory.createEvent(title, date);
         return bookingFacade.createEvent(event);
     }
 
-    private Event createEvent(String title, Date date, BigDecimal ticketPrice) {
+    private Event createEvent(String title, LocalDateTime date, BigDecimal ticketPrice) {
         Event event = eventFactory.createEvent(title, date, ticketPrice);
         return bookingFacade.createEvent(event);
     }

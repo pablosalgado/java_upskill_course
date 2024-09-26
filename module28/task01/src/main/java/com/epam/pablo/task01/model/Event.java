@@ -1,7 +1,7 @@
 package com.epam.pablo.task01.model;
 
 import java.math.BigDecimal;
-import java.util.Date;
+import java.time.LocalDateTime;
 import java.util.List;
 
 import jakarta.persistence.*;
@@ -13,7 +13,7 @@ public class Event {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
     private String title;
-    private Date date;
+    private LocalDateTime date;
     private BigDecimal ticketPrice = BigDecimal.ZERO;
 
     @OneToMany(mappedBy = "event")
@@ -35,11 +35,11 @@ public class Event {
         this.title = title;
     }
 
-    public Date getDate() {
+    public LocalDateTime getDate() {
         return date;
     }
 
-    public void setDate(Date date) {
+    public void setDate(LocalDateTime date) {
         this.date = date;
     }
 

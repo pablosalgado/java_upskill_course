@@ -59,14 +59,6 @@ public interface BookingFacade {
     /**
      * Updates event using given data.
      * 
-     * @param event Event data for update. Should have id set.
-     * @return Updated Event object.
-     */
-    Event updateEvent(Event event);
-
-    /**
-     * Updates event using given data.
-     * 
      * @param id    Event id.
      * @param event Event data for update.
      * @return Updated Event object.
@@ -115,14 +107,6 @@ public interface BookingFacade {
      * @return Created User object.
      */
     User createUser(User user);
-
-    /**
-     * Updates user using given data.
-     * 
-     * @param user User data for update. Should have id set.
-     * @return Updated User object.
-     */
-    User updateUser(User user);
 
     /**
      * Updates user using given data.

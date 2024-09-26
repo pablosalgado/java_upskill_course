@@ -49,17 +49,8 @@ public class BookingFacadeImpl implements BookingFacade {
     }
 
     @Override
-    public Event updateEvent(Event event) {
-        return eventService.updateEvent(event);
-    }
-
-    @Override
     public Event updateEvent(Long id, Event event) {
-        var eventToUpdate = getEventById(id);
-        eventToUpdate.setTitle(event.getTitle());
-        eventToUpdate.setDate(event.getDate());
-        eventToUpdate.setTicketPrice(event.getTicketPrice());
-        return updateEvent(eventToUpdate);
+        return eventService.updateEvent(id, event);
     }
 
     @Override
@@ -88,16 +79,8 @@ public class BookingFacadeImpl implements BookingFacade {
     }
 
     @Override
-    public User updateUser(User user) {
-        return userService.updateUser(user);
-    }
-
-    @Override
     public User updateUser(Long id, User user) {
-        var userToUpdate = getUserById(id);
-        userToUpdate.setName(user.getName());
-        userToUpdate.setEmail(user.getEmail());
-        return updateUser(userToUpdate);
+        return userService.updateUser(id, user);
     }
 
     @Override

@@ -19,6 +19,8 @@ public interface EventService {
 
     Event updateEvent(Event event);
 
+    Event updateEvent(Long id, Event event);
+
     boolean deleteEvent(long eventId);
 
     Page<Event> getAllEvents(int pageSize, int pageNum);

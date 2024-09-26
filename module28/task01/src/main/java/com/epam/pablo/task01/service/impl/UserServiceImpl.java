@@ -60,16 +60,18 @@ public class UserServiceImpl implements UserService {
 
     @Override
     @Transactional
-    public User updateUser(User user) {
-        if (user != null && user.getId() != null) {
-            logger.debug("Updating user: {}", user);
-            if (userRepository.existsById(user.getId())) {
-                return userRepository.save(user);
-            } else {
-                logger.warn("Attempted to update non-existing user with ID: {}", user.getId());
-            }
-        }
-        return null;
+    public User updateUser(Long id, User user) {
+        logger.debug("Updating user with ID: {}", id);
+
+        var userToUpdate = userRepository.findById(id).orElseThrow(() -> {
+            logger.warn("Attempted to update non-existing user with ID: {}", id);
+            return new UserNotFoundException(id);
+        });
+        
+        userToUpdate.setName(user.getName());
+        userToUpdate.setEmail(user.getEmail());
+
+        return userRepository.save(userToUpdate);
     }
 
     @Override

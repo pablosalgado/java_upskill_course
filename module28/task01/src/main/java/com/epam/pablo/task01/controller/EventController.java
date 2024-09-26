@@ -36,7 +36,7 @@ public class EventController {
         return "events/list";
     }
 
-        @GetMapping("/{id}")
+    @GetMapping("/{id}")
     public String getEvent(Model model, @PathVariable Long id) {
         model.addAttribute("event", bookingFacade.getEventById(id));
         return "events/show";

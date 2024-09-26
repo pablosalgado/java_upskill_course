@@ -72,6 +72,21 @@ public class EventServiceImpl implements EventService {
 
     @Override
     @Transactional
+    public Event updateEvent(Long id, Event event) {
+        logger.debug("Updating event with ID: {}", id);
+        var eventToUpdate = getEventById(id);
+        if (eventToUpdate != null) {
+            eventToUpdate.setTitle(event.getTitle());
+            eventToUpdate.setDate(event.getDate());
+            eventToUpdate.setTicketPrice(event.getTicketPrice());
+            return updateEvent(eventToUpdate);
+        }
+        logger.warn("Attempted to update non-existing event with ID: {}", id);
+        return null;
+    }
+
+    @Override
+    @Transactional
     public boolean deleteEvent(long eventId) {
         logger.debug("Deleting event with ID: {}", eventId);
         if (eventRepository.existsById(eventId)) {
