@@ -1,52 +1,52 @@
 <!DOCTYPE html>
-<html xmlns:th="http://www.thymeleaf.org" lang="en">
+<html layout:decorate="~{layout}" xmlns:th="http://www.thymeleaf.org" lang="en">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Users</title>
-    <link href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css" rel="stylesheet">
 </head>
 <body>
-<div class="container mt-3">
-    <h1>Users</h1>
-    <a th:href="@{/users/new}" class="btn btn-primary mb-3">Create New User</a>
-    <table class="table">
-        <thead>
-            <tr>
-                <th>ID</th>
-                <th>Name</th>
-                <th>Email</th>
-                <th>Account Balance</th>
-                <th>Actions</th>
-            </tr>
-        </thead>
-        <tbody>
-            <tr th:each="user : ${users}">
-                <td th:text="${user.id}"></td>
-                <td><a th:href="@{/users/{id}(id=${user.id})}" th:text="${user.name}"></a></td>
-                <td th:text="${user.email}"></td>
-                <td th:text="'$'+ ${#numbers.formatDecimal(user.accountBalance, 1, 'COMMA', 2, 'POINT')}" class="text-right"></td>
-                <td>
-                    <a th:href="@{/users/edit/{id}(id=${user.id})}" class="btn btn-info">Edit</a>
-                    <a th:href="@{/users/delete/{id}(id=${user.id})}" class="btn btn-danger">Delete</a>
-                    <a th:href="@{/tickets/new/{userId}(userId=${user.id})}" class="btn btn-primary">Buy Ticket</a>
-                </td>
-            </tr>
-        </tbody>
-    </table>
-    <div>
-        <ul class="pagination">
-            <li th:classappend="${currentPage == 0} ? 'disabled' : ''" class="page-item">
-                <a th:href="@{/users(page=${currentPage - 1}, size=${size})}" class="page-link">Previous</a>
-            </li>
-            <li th:each="i : ${#numbers.sequence(0, totalPages - 1)}" th:classappend="${i == currentPage} ? 'active' : ''" class="page-item">
-                <a th:href="@{/users(page=${i}, size=${size})}" th:text="${i + 1}" class="page-link"></a>
-            </li>
-            <li th:classappend="${currentPage + 1 == totalPages} ? 'disabled' : ''" class="page-item">
-                <a th:href="@{/users(page=${currentPage + 1}, size=${size})}" class="page-link">Next</a>
-            </li>
-        </ul>
-    </div>
+    <div layout:fragment="content">
+        <h1>Users</h1>
+        <a th:href="@{/users/new}" class="btn btn-primary mb-3">Create New User</a>
+        <table class="table">
+            <thead>
+                <tr>
+                    <th>ID</th>
+                    <th>Name</th>
+                    <th>Email</th>
+                    <th>Account Balance</th>
+                    <th>Actions</th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr th:each="user : ${users}">
+                    <td th:text="${user.id}"></td>
+                    <td><a th:href="@{/users/{id}(id=${user.id})}" th:text="${user.name}"></a></td>
+                    <td th:text="${user.email}"></td>
+                    <td th:text="'$'+ ${#numbers.formatDecimal(user.accountBalance, 1, 'COMMA', 2, 'POINT')}" class="text-right"></td>
+                    <td>
+                        <a th:href="@{/users/edit/{id}(id=${user.id})}" class="btn btn-info">Edit</a>
+                        <a th:href="@{/users/delete/{id}(id=${user.id})}" class="btn btn-danger">Delete</a>
+                        <a th:href="@{/tickets/new/{userId}(userId=${user.id})}" class="btn btn-primary">Buy Ticket</a>
+                        <a th:href="@{/tickets/user/{userId}(userId=${user.id})}" class="btn btn-secondary">View Tickets</a>
+                    </td>
+                </tr>
+            </tbody>
+        </table>
+        <div>
+            <ul class="pagination">
+                <li th:classappend="${currentPage == 0} ? 'disabled' : ''" class="page-item">
+                    <a th:href="@{/users(page=${currentPage - 1}, size=${size})}" class="page-link">Previous</a>
+                </li>
+                <li th:each="i : ${#numbers.sequence(0, totalPages - 1)}" th:classappend="${i == currentPage} ? 'active' : ''" class="page-item">
+                    <a th:href="@{/users(page=${i}, size=${size})}" th:text="${i + 1}" class="page-link"></a>
+                </li>
+                <li th:classappend="${currentPage + 1 == totalPages} ? 'disabled' : ''" class="page-item">
+                    <a th:href="@{/users(page=${currentPage + 1}, size=${size})}" class="page-link">Next</a>
+                </li>
+            </ul>
+        </div>
     </div>
 </body>
 </html>

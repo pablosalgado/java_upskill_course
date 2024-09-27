@@ -137,6 +137,17 @@ public interface BookingFacade {
      */
     Ticket bookTicket(long userId, long eventId, int place, Ticket.Category category);
 
+    Ticket getTicketById(Long id);
+
+    /**
+     * Retrieves a list of booked tickets.
+     *
+     * @param pageSize the number of tickets to retrieve per page.
+     * @param pageNum the page number to retrieve.
+     * @return a list of booked tickets for the specified page.
+     */
+    Page<Ticket> getBookedTickets(int pageSize, int pageNum);
+
     /**
      * Get all booked tickets for specified user. Tickets should be sorted by event
      * date in descending order.
@@ -148,6 +159,16 @@ public interface BookingFacade {
      * @return List of Ticket objects.
      */
     List<Ticket> getBookedTickets(User user, int pageSize, int pageNum);
+
+    /**
+     * Retrieves a paginated list of tickets booked by a specific user.
+     *
+     * @param user the user whose booked tickets are to be retrieved
+     * @param pageSize the number of tickets to be included in each page
+     * @param pageNum the page number to retrieve
+     * @return a page of tickets booked by the specified user
+     */
+    Page<Ticket> getBookedTicketsByUser(User user, int pageSize, int pageNum);
 
     /**
      * Get all booked tickets for specified event. Tickets should be sorted in by
@@ -196,4 +217,5 @@ public interface BookingFacade {
      * @return List of Event objects.
      */
     Page<Event> getAllEvents(int pageSize, int pageNum);
+
 }

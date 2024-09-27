@@ -1,24 +1,23 @@
 <!DOCTYPE html>
-<html xmlns:th="http://www.thymeleaf.org" lang="en">
+<html layout:decorate="~{layout}" xmlns:th="http://www.thymeleaf.org" lang="en">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Event Detail</title>
-    <link href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css" rel="stylesheet">
 </head>
 <body>
-<div class="container mt-4">
-    <h1>Event Detail</h1>
-    <div class="card">
-        <div class="card-body">
-            <h5 class="card-title" th:text="${event.title}">Event Name</h5>
-            <p class="card-text">Title: <span th:text="${event.title}"></span></p>
-            <p class="card-text">Date: <span th:text="${#temporals.format(event.date, 'yyyy-MM-dd HH:mm')}"></span></p>
-            <p class="card-text">Price: $<span th:text="${#numbers.formatDecimal(event.ticketPrice, 1, 'COMMA', 2, 'POINT')}"></span></p>
-            <a th:href="@{/events/edit/{id}(id=${event.id})}" class="btn btn-info">Edit</a>
-            <a th:href="@{/events/delete/{id}(id=${event.id})}" class="btn btn-danger">Delete</a>
+    <div layout:fragment="content">
+        <h1>Event Detail</h1>
+        <div class="card">
+            <div class="card-body">
+                <h5 class="card-title" th:text="${event.title}">Event Name</h5>
+                <p class="card-text">Title: <span th:text="${event.title}"></span></p>
+                <p class="card-text">Date: <span th:text="${#temporals.format(event.date, 'yyyy-MM-dd HH:mm')}"></span></p>
+                <p class="card-text">Price: $<span th:text="${#numbers.formatDecimal(event.ticketPrice, 1, 'COMMA', 2, 'POINT')}"></span></p>
+                <a th:href="@{/events/edit/{id}(id=${event.id})}" class="btn btn-info">Edit</a>
+                <a th:href="@{/events/delete/{id}(id=${event.id})}" class="btn btn-danger">Delete</a>
+            </div>
         </div>
     </div>
-</div>
 </body>
 </html>

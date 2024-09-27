@@ -7,21 +7,23 @@
 </head>
 <body>
     <div layout:fragment="content">
-        <h1>Tickets for <span th:text="${user.name}"></span></h1>
+        <h1>Tickets</h1>
         <table class="table">
             <thead>
                 <tr>
                     <th>ID</th>
                     <th>Event</th>
                     <th>Date</th>
+                    <th>User</th>
                     <th>Actions</th>
                 </tr>
             </thead>
             <tbody>
                 <tr th:each="ticket : ${tickets}">
                     <td th:text="${ticket.id}"></td>
-                    <td><a th:href="@{/tickets/{id}(id=${ticket.id})}" th:text="${ticket.event.title}"></a></td>
+                    <td><a th:href="@{/events/{id}(id=${ticket.event.id})}" th:text="${ticket.event.title}"></a></td>
                     <td th:text="${#temporals.format(ticket.event.date, 'yyyy-MM-dd HH:mm')}"></td>
+                    <td th:text="${ticket.user.name}"></td>
                     <td>
                         <a th:href="@{/tickets/delete/{id}(id=${ticket.id})}" class="btn btn-danger">Cancel</a>
                     </td>

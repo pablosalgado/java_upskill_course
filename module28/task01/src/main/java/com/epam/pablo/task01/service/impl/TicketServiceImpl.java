@@ -2,9 +2,11 @@ package com.epam.pablo.task01.service.impl;
 
 import java.util.List;
 
+import org.hibernate.annotations.DialectOverride.OverridesAnnotation;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
@@ -72,14 +74,37 @@ public class TicketServiceImpl implements TicketService {
 
     @Override
     @Transactional(readOnly = true)
-    public List<Ticket> getBookedTickets(User user, int pageSize, int pageNum) {
-        logger.debug("Fetching booked tickets for user ID: {}, page size: {}, page number: {}", user.getId(), pageSize, pageNum);
-        Pageable pageable = PageRequest.of(pageNum, pageSize);
-        return ticketRepository.findByUserId(user.getId(), pageable).getContent();
+    public Ticket getTicketById(Long id) {
+        logger.debug("Fetching ticket by ID: {}", id);
+        return ticketRepository.findById(id).orElseThrow();
     }
 
     @Override
     @Transactional(readOnly = true)
+    public Page<Ticket> getBookedTickets(int pageSize, int pageNum) {
+        logger.debug("Fetching booked tickets, page size: {}, page number: {}", pageSize, pageNum);
+        Pageable pageable = PageRequest.of(pageNum, pageSize);
+        return ticketRepository.findAllWithUserAndEvent(pageable);
+    }
+
+    @Override
+    @Transactional(readOnly = true)
+    @Deprecated
+    public List<Ticket> getBookedTickets(User user, int pageSize, int pageNum) {
+        return getBookedTicketsByUser(user, pageSize, pageNum).getContent();
+    }
+
+    @Override
+    @Transactional(readOnly = true)
+    public Page<Ticket> getBookedTicketsByUser(User user, int pageSize, int pageNum) {
+        logger.debug("Fetching booked tickets for user ID: {}, page size: {}, page number: {}", user.getId(), pageSize, pageNum);
+        Pageable pageable = PageRequest.of(pageNum, pageSize);
+        return ticketRepository.findByUserIdWithUserAndEvent(user.getId(), pageable);
+    }
+
+    @Override
+    @Transactional(readOnly = true)
+    @Deprecated
     public List<Ticket> getBookedTickets(Event event, int pageSize, int pageNum) {
         logger.debug("Fetching booked tickets for event ID: {}, page size: {}, page number: {}", event.getId(), pageSize, pageNum);
         Pageable pageable = PageRequest.of(pageNum, pageSize);

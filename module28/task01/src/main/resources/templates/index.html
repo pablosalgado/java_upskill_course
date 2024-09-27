@@ -1,0 +1,19 @@
+<!DOCTYPE html>
+<html layout:decorate="~{layout}" xmlns:th="http://www.thymeleaf.org" lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Welcome</title>
+</head>
+<body>
+    <div layout:fragment="content">
+        <h1>Welcome to Booking App</h1>
+        <p>This is the landing page of the application. Navigate through the menu to access different modules.</p>
+        <div>
+            <a th:href="@{/users}" class="btn btn-primary">Manage Users</a>
+            <a th:href="@{/events}" class="btn btn-primary">View Events</a>
+            <a th:href="@{/tickets}" class="btn btn-primary">Browse Tickets</a>
+        </div>
+    </div>
+</body>
+</html>

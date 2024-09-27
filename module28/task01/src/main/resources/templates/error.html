@@ -1,14 +1,16 @@
 <!DOCTYPE html>
-<html xmlns:th="http://www.thymeleaf.org" lang="en">
+<html layout:decorate="~{layout}" xmlns:th="http://www.thymeleaf.org" lang="en">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Error Page</title>
 </head>
 <body>
-<h1>Error Occurred</h1>
-<p>Error Message: <span th:text="${errorMessage}"></span></p>
-<h2>Stack Trace:</h2>
-<pre th:text="${stackTrace}"></pre>
+    <div layout:fragment="content">
+        <h1>Error Occurred</h1>
+        <p>Error Message: <span th:text="${errorMessage}"></span></p>
+        <h2>Stack Trace:</h2>
+        <pre th:text="${stackTrace}"></pre>
+    </div>
 </body>
 </html>

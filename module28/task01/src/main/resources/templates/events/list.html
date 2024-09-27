@@ -1,51 +1,50 @@
 <!DOCTYPE html>
-<html xmlns:th="http://www.thymeleaf.org" lang="en">
+<html layout:decorate="~{layout}" xmlns:th="http://www.thymeleaf.org" lang="en">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Events</title>
-    <link href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css" rel="stylesheet">
 </head>
 <body>
-<div class="container mt-3">
-    <h1>Events</h1>
-    <a th:href="@{/events/new}" class="btn btn-primary mb-3">Create New Event</a>
-    <table class="table">
-        <thead>
-            <tr>
-                <th>ID</th>
-                <th>Title</th>
-                <th>Date</th>
-                <th>Price</th>
-                <th>Actions</th>
-            </tr>
-        </thead>
-        <tbody>
-            <tr th:each="event : ${events}">
-                <td th:text="${event.id}"></td>
-                <td><a th:href="@{/events/{id}(id=${event.id})}" th:text="${event.title}"></a></td>
-                <td th:text="${#temporals.format(event.date, 'yyyy-MM-dd HH:mm')}"></td>
-                <td th:text="'$'+ ${#numbers.formatDecimal(event.ticketPrice, 1, 'COMMA', 2, 'POINT')}" class="text-right"></td>
-                <td>
-                    <a th:href="@{/events/edit/{id}(id=${event.id})}" class="btn btn-info">Edit</a>
-                    <a th:href="@{/events/delete/{id}(id=${event.id})}" class="btn btn-danger">Delete</a>
-                </td>
-            </tr>
-        </tbody>
-    </table>
-    <div>
-        <ul class="pagination">
-            <li th:classappend="${currentPage == 0} ? 'disabled' : ''" class="page-item">
-                <a th:href="@{/events(page=${currentPage - 1}, size=${size})}" class="page-link">Previous</a>
-            </li>
-            <li th:each="i : ${#numbers.sequence(0, totalPages - 1)}" th:classappend="${i == currentPage} ? 'active' : ''" class="page-item">
-                <a th:href="@{/events(page=${i}, size=${size})}" th:text="${i + 1}" class="page-link"></a>
-            </li>
-            <li th:classappend="${currentPage + 1 == totalPages} ? 'disabled' : ''" class="page-item">
-                <a th:href="@{/events(page=${currentPage + 1}, size=${size})}" class="page-link">Next</a>
-            </li>
-        </ul>
-    </div>
-    </div>
+    <div layout:fragment="content">
+        <h1>Events</h1>
+        <a th:href="@{/events/new}" class="btn btn-primary mb-3">Create New Event</a>
+        <table class="table">
+            <thead>
+                <tr>
+                    <th>ID</th>
+                    <th>Title</th>
+                    <th>Date</th>
+                    <th>Price</th>
+                    <th>Actions</th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr th:each="event : ${events}">
+                    <td th:text="${event.id}"></td>
+                    <td><a th:href="@{/events/{id}(id=${event.id})}" th:text="${event.title}"></a></td>
+                    <td th:text="${#temporals.format(event.date, 'yyyy-MM-dd HH:mm')}"></td>
+                    <td th:text="'$'+ ${#numbers.formatDecimal(event.ticketPrice, 1, 'COMMA', 2, 'POINT')}" class="text-right"></td>
+                    <td>
+                        <a th:href="@{/events/edit/{id}(id=${event.id})}" class="btn btn-info">Edit</a>
+                        <a th:href="@{/events/delete/{id}(id=${event.id})}" class="btn btn-danger">Delete</a>
+                    </td>
+                </tr>
+            </tbody>
+        </table>
+        <div>
+            <ul class="pagination">
+                <li th:classappend="${currentPage == 0} ? 'disabled' : ''" class="page-item">
+                    <a th:href="@{/events(page=${currentPage - 1}, size=${size})}" class="page-link">Previous</a>
+                </li>
+                <li th:each="i : ${#numbers.sequence(0, totalPages - 1)}" th:classappend="${i == currentPage} ? 'active' : ''" class="page-item">
+                    <a th:href="@{/events(page=${i}, size=${size})}" th:text="${i + 1}" class="page-link"></a>
+                </li>
+                <li th:classappend="${currentPage + 1 == totalPages} ? 'disabled' : ''" class="page-item">
+                    <a th:href="@{/events(page=${currentPage + 1}, size=${size})}" class="page-link">Next</a>
+                </li>
+            </ul>
+        </div>
+        </div>
 </body>
 </html>

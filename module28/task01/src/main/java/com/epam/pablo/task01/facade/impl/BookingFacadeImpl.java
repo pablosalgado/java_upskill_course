@@ -34,11 +34,13 @@ public class BookingFacadeImpl implements BookingFacade {
     }
 
     @Override
+    @Deprecated
     public List<Event> getEventsByTitle(String title, int pageSize, int pageNum) {
         return eventService.getEventsByTitle(title, pageSize, pageNum);
     }
 
     @Override
+    @Deprecated
     public List<Event> getEventsForDay(Date day, int pageSize, int pageNum) {
         return eventService.getEventsForDay(day, pageSize, pageNum);
     }
@@ -69,6 +71,7 @@ public class BookingFacadeImpl implements BookingFacade {
     }
 
     @Override
+    @Deprecated
     public List<User> getUsersByName(String name, int pageSize, int pageNum) {
         return userService.getUsersByName(name, pageSize, pageNum);
     }
@@ -94,11 +97,28 @@ public class BookingFacadeImpl implements BookingFacade {
     }
 
     @Override
+    public Ticket getTicketById(Long id) {
+        return ticketService.getTicketById(id);
+    }
+
+    @Override
+    public Page<Ticket> getBookedTickets(int pageSize, int pageNum) {
+        return ticketService.getBookedTickets(pageSize, pageNum);
+    }
+
+    @Override
+    @Deprecated
     public List<Ticket> getBookedTickets(User user, int pageSize, int pageNum) {
         return ticketService.getBookedTickets(user, pageSize, pageNum);
     }
 
     @Override
+    public Page<Ticket> getBookedTicketsByUser(User user, int pageSize, int pageNum) {
+        return ticketService.getBookedTicketsByUser(user, pageSize, pageNum);
+    }
+
+    @Override
+    @Deprecated
     public List<Ticket> getBookedTickets(Event event, int pageSize, int pageNum) {
         return ticketService.getBookedTickets(event, pageSize, pageNum);
     }
@@ -122,4 +142,5 @@ public class BookingFacadeImpl implements BookingFacade {
     public Page<Event> getAllEvents(int pageSize, int pageNum) {
         return eventService.getAllEvents(pageSize, pageNum);
     }
+
 }

@@ -182,10 +182,10 @@ public class TicketServiceImplTest {
         List<Ticket> tickets = Arrays.asList(new Ticket(), new Ticket());
         Page<Ticket> page = new PageImpl<>(tickets);
 
-        when(ticketRepository.findByUserId(eq(1L), any())).thenReturn(page);
+        when(ticketRepository.findByUserIdWithUserAndEvent(eq(1L), any())).thenReturn(page);
         List<Ticket> result = ticketService.getBookedTickets(user, 10, 1);
 
-        verify(ticketRepository).findByUserId(eq(1L), any(PageRequest.class));
+        verify(ticketRepository).findByUserIdWithUserAndEvent(eq(1L), any(PageRequest.class));
         assertEquals(tickets, result);
     }
 
