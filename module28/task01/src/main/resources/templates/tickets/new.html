@@ -1,0 +1,65 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org" lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Book a Ticket</title>
+    <link href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css" rel="stylesheet">
+    <script src="https://code.jquery.com/jquery-3.5.1.slim.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.9.2/dist/umd/popper.min.js"></script>
+    <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
+</head>
+<body>
+<div class="container mt-3">
+    <h2>Book a Ticket for <span th:text="${user.name}"></span></h2>
+    <div class="card mb-4">
+        <div class="card-body">
+            <h5 class="card-title" th:text="${user.name}"></h5>
+            <h6 class="card-subtitle mb-2 text-muted" th:text="${user.email}"></h6>
+            <p class="card-text">Account Balance: <span th:text="'$' + ${#numbers.formatDecimal(user.accountBalance, 1, 'COMMA', 2, 'POINT')}"></span></p>
+        </div>
+    </div>
+    <form th:action="@{/tickets}" th:object="${ticket}" method="post">
+        <div class="form-group">
+            <label for="event">Event</label>
+            <select id="event" th:field="*{event}" class="form-control" onchange="updatePrice()">
+                <option th:each="event : ${events}"
+                        th:value="${event.id}"
+                        th:data-price="${event.ticketPrice}"
+                        th:text="${event.title}">Event Title</option>
+            </select>
+        </div>
+        <div class="form-group">
+            <label for="category">Category</label>
+            <select id="category" th:field="*{category}" class="form-control">
+                <option th:each="category : ${T(com.epam.pablo.task01.model.Ticket.Category).values()}"
+                        th:value="${category}"
+                        th:text="${category}">Category</option>
+            </select>
+        </div>
+        <div class="form-group">
+            <label for="place">Seat Number</label>
+            <input type="number" id="place" th:field="*{place}" class="form-control" placeholder="Enter seat number">
+        </div>
+        <div class="form-group">
+            <label>Price:</label>
+            <span id="price" class="font-weight-bold">$0.00</span>
+        </div>
+        <div class="form-group">
+            <input type="hidden" name="userId" th:value="${user.id}" />
+        </div>
+        <button type="submit" class="btn btn-primary">Book Ticket</button>
+    </form>
+</div>
+<script>
+    function updatePrice() {
+        var selectedOption = $('#event option:selected');
+        var price = selectedOption.data('price');
+        $('#price').text('$' + price);
+    }
+    $(document).ready(function() {
+        updatePrice();
+    });
+</script>
+</body>
+</html>

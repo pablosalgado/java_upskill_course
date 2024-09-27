@@ -29,23 +29,24 @@
                 <td>
                     <a th:href="@{/users/edit/{id}(id=${user.id})}" class="btn btn-info">Edit</a>
                     <a th:href="@{/users/delete/{id}(id=${user.id})}" class="btn btn-danger">Delete</a>
+                    <a th:href="@{/tickets/new/{userId}(userId=${user.id})}" class="btn btn-primary">Buy Ticket</a>
                 </td>
             </tr>
         </tbody>
     </table>
-</div>
-<div>
-    <ul class="pagination">
-        <li th:classappend="${currentPage == 0} ? 'disabled' : ''" class="page-item">
-            <a th:href="@{/users(page=${currentPage - 1}, size=${size})}" class="page-link">Previous</a>
-        </li>
-        <li th:each="i : ${#numbers.sequence(0, totalPages - 1)}" th:classappend="${i == currentPage} ? 'active' : ''" class="page-item">
-            <a th:href="@{/users(page=${i}, size=${size})}" th:text="${i + 1}" class="page-link"></a>
-        </li>
-        <li th:classappend="${currentPage + 1 == totalPages} ? 'disabled' : ''" class="page-item">
-            <a th:href="@{/users(page=${currentPage + 1}, size=${size})}" class="page-link">Next</a>
-        </li>
-    </ul>
-</div>
+    <div>
+        <ul class="pagination">
+            <li th:classappend="${currentPage == 0} ? 'disabled' : ''" class="page-item">
+                <a th:href="@{/users(page=${currentPage - 1}, size=${size})}" class="page-link">Previous</a>
+            </li>
+            <li th:each="i : ${#numbers.sequence(0, totalPages - 1)}" th:classappend="${i == currentPage} ? 'active' : ''" class="page-item">
+                <a th:href="@{/users(page=${i}, size=${size})}" th:text="${i + 1}" class="page-link"></a>
+            </li>
+            <li th:classappend="${currentPage + 1 == totalPages} ? 'disabled' : ''" class="page-item">
+                <a th:href="@{/users(page=${currentPage + 1}, size=${size})}" class="page-link">Next</a>
+            </li>
+        </ul>
+    </div>
+    </div>
 </body>
 </html>

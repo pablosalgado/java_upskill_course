@@ -33,19 +33,19 @@
             </tr>
         </tbody>
     </table>
-</div>
-<div>
-    <ul class="pagination">
-        <li th:classappend="${currentPage == 0} ? 'disabled' : ''" class="page-item">
-            <a th:href="@{/events(page=${currentPage - 1}, size=${size})}" class="page-link">Previous</a>
-        </li>
-        <li th:each="i : ${#numbers.sequence(0, totalPages - 1)}" th:classappend="${i == currentPage} ? 'active' : ''" class="page-item">
-            <a th:href="@{/events(page=${i}, size=${size})}" th:text="${i + 1}" class="page-link"></a>
-        </li>
-        <li th:classappend="${currentPage + 1 == totalPages} ? 'disabled' : ''" class="page-item">
-            <a th:href="@{/events(page=${currentPage + 1}, size=${size})}" class="page-link">Next</a>
-        </li>
-    </ul>
-</div>
+    <div>
+        <ul class="pagination">
+            <li th:classappend="${currentPage == 0} ? 'disabled' : ''" class="page-item">
+                <a th:href="@{/events(page=${currentPage - 1}, size=${size})}" class="page-link">Previous</a>
+            </li>
+            <li th:each="i : ${#numbers.sequence(0, totalPages - 1)}" th:classappend="${i == currentPage} ? 'active' : ''" class="page-item">
+                <a th:href="@{/events(page=${i}, size=${size})}" th:text="${i + 1}" class="page-link"></a>
+            </li>
+            <li th:classappend="${currentPage + 1 == totalPages} ? 'disabled' : ''" class="page-item">
+                <a th:href="@{/events(page=${currentPage + 1}, size=${size})}" class="page-link">Next</a>
+            </li>
+        </ul>
+    </div>
+    </div>
 </body>
 </html>

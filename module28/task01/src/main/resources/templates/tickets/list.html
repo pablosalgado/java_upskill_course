@@ -1,0 +1,51 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org" lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Tickets</title>
+    <link href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css" rel="stylesheet">
+</head>
+<body>
+<div class="container mt-3">
+    <h1>Tickets</h1>
+    <a th:href="@{/tickets/new}" class="btn btn-primary mb-3">Create New Ticket</a>
+    <table class="table">
+        <thead>
+            <tr>
+                <th>ID</th>
+                <th>Event</th>
+                <th>Date</th>
+                <th>User</th>
+                <th>Actions</th>
+            </tr>
+        </thead>
+        <tbody>
+            <tr th:each="ticket : ${tickets}">
+                <td th:text="${ticket.id}"></td>
+                <td><a th:href="@{/tickets/{id}(id=${ticket.id})}" th:text="${ticket.event.title}"></a></td>
+                <td th:text="${#temporals.format(ticket.event.date 'yyyy-MM-dd mm:ss')}"></td>
+                <td th:text="${ticket.user.name}"></td>
+                <td>
+                    <a th:href="@{/tickets/edit/{id}(id=${ticket.id})}" class="btn btn-info">Edit</a>
+                    <a th:href="@{/tickets/delete/{id}(id=${ticket.id})}" class="btn btn-danger">Delete</a>
+                </td>
+            </tr>
+        </tbody>
+    </table>
+    <div>
+        <ul class="pagination">
+            <li th:classappend="${currentPage == 0} ? 'disabled' : ''" class="page-item">
+                <a th:href="@{/tickets(page=${currentPage - 1}, size=${size})}" class="page-link">Previous</a>
+            </li>
+            <li th:each="i : ${#numbers.sequence(0, totalPages - 1)}" th:classappend="${i == currentPage} ? 'active' : ''" class="page-item">
+                <a th:href="@{/tickets(page=${i}, size=${size})}" th:text="${i + 1}" class="page-link"></a>
+            </li>
+            <li th:classappend="${currentPage + 1 == totalPages} ? 'disabled' : ''" class="page-item">
+                <a th:href="@{/tickets(page=${currentPage + 1}, size=${size})}" class="page-link">Next</a>
+            </li>
+        </ul>
+    </div>
+    </div>
+</body>
+</html>
