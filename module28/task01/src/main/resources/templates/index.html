@@ -13,6 +13,9 @@
             <a th:href="@{/users}" class="btn btn-primary">Manage Users</a>
             <a th:href="@{/events}" class="btn btn-primary">View Events</a>
             <a th:href="@{/tickets}" class="btn btn-primary">Browse Tickets</a>
+            <form th:action="@{/tickets/seed}" method="post" style="display:inline;">
+                <button type="submit" class="btn btn-success" style="background-color: #28a745; border-color: #28a745;">Seed Default Tickets</button>
+            </form>
         </div>
     </div>
 </body>

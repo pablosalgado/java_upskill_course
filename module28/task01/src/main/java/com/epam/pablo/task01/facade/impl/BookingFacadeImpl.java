@@ -7,6 +7,7 @@ import java.util.List;
 import com.epam.pablo.task01.service.ImportDataService;
 import org.springframework.data.domain.Page;
 import org.springframework.stereotype.Service;
+import org.springframework.web.multipart.MultipartFile;
 
 import com.epam.pablo.task01.facade.BookingFacade;
 import com.epam.pablo.task01.model.Event;
@@ -149,6 +150,11 @@ public class BookingFacadeImpl implements BookingFacade {
     @Override
     public void preloadTickets() {
         importDataService.preloadTickets();
+    }
+
+    @Override
+    public void preloadTickets(MultipartFile file) {
+        importDataService.preloadTickets(file);
     }
 
 }

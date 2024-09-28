@@ -5,6 +5,7 @@ import java.util.Date;
 import java.util.List;
 
 import org.springframework.data.domain.Page;
+import org.springframework.web.multipart.MultipartFile;
 
 import com.epam.pablo.task01.model.Event;
 import com.epam.pablo.task01.model.Ticket;
@@ -223,5 +224,12 @@ public interface BookingFacade {
      * This method is intended to be used for initializing the system with a set of predefined tickets.
      */
     void preloadTickets();
+
+    /**
+     * Preloads tickets from the provided file.
+     *
+     * @param file the MultipartFile containing ticket data to be preloaded
+     */
+    void preloadTickets(MultipartFile file);
 
 }

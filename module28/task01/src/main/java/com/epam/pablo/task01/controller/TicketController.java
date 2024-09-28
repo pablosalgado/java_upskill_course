@@ -9,6 +9,7 @@ import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.multipart.MultipartFile;
 
 import com.epam.pablo.task01.facade.BookingFacade;
 import com.epam.pablo.task01.model.Ticket;
@@ -72,6 +73,18 @@ public class TicketController {
         Ticket ticket = bookingFacade.getTicketById(id); 
         bookingFacade.cancelTicket(id);
         return "redirect:/tickets/user/" + ticket.getUser().getId();
+    }
+
+    @PostMapping("/upload")
+    public String uploadDefaultTickets(@RequestParam("file") MultipartFile file, Model model) {
+        bookingFacade.preloadTickets(file);
+        return "redirect:/tickets";
+    }
+
+    @PostMapping("/seed")    
+    public String seedTickets() {
+        bookingFacade.preloadTickets();
+        return "redirect:/tickets";
     }
 
 }
