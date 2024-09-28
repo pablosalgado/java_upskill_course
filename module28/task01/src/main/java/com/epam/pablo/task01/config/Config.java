@@ -16,7 +16,7 @@ public class Config implements WebMvcConfigurer {
     @Override
     public void addFormatters(@NonNull FormatterRegistry registry) {
         DateTimeFormatterRegistrar registrar = new DateTimeFormatterRegistrar();
-        registrar.setDateTimeFormatter(DateTimeFormatter.ISO_LOCAL_DATE_TIME);
+        registrar.setDateTimeFormatter(DateTimeFormatter.ofPattern("yyyy-MM-dd'T'HH:mm"));
         registrar.registerFormatters(registry);
     }
 
