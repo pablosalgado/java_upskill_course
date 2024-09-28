@@ -4,6 +4,7 @@ import java.math.BigDecimal;
 import java.util.Date;
 import java.util.List;
 
+import com.epam.pablo.task01.service.ImportDataService;
 import org.springframework.data.domain.Page;
 import org.springframework.stereotype.Service;
 
@@ -21,11 +22,13 @@ public class BookingFacadeImpl implements BookingFacade {
     private final UserService userService;
     private final EventService eventService;
     private final TicketService ticketService;
+    private final ImportDataService importDataService;
 
-    public BookingFacadeImpl(UserService userService, EventService eventService, TicketService ticketService) {
+    public BookingFacadeImpl(UserService userService, EventService eventService, TicketService ticketService, ImportDataService importService) {
         this.userService = userService;
         this.eventService = eventService;
         this.ticketService = ticketService;
+        this.importDataService = importService;
     }
 
     @Override
@@ -141,6 +144,11 @@ public class BookingFacadeImpl implements BookingFacade {
     @Override
     public Page<Event> getAllEvents(int pageSize, int pageNum) {
         return eventService.getAllEvents(pageSize, pageNum);
+    }
+
+    @Override
+    public void preloadTickets() {
+        importDataService.preloadTickets();
     }
 
 }

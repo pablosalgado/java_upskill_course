@@ -218,4 +218,10 @@ public interface BookingFacade {
      */
     Page<Event> getAllEvents(int pageSize, int pageNum);
 
+    /**
+     * Preloads tickets into the system.
+     * This method is intended to be used for initializing the system with a set of predefined tickets.
+     */
+    void preloadTickets();
+
 }

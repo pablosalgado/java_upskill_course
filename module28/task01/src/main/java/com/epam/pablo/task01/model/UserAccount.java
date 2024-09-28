@@ -1,5 +1,10 @@
 package com.epam.pablo.task01.model;
 
+import java.math.BigDecimal;
+
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+
 import jakarta.persistence.Entity;
 import jakarta.persistence.FetchType;
 import jakarta.persistence.GeneratedValue;
@@ -8,14 +13,12 @@ import jakarta.persistence.Id;
 import jakarta.persistence.JoinColumn;
 import jakarta.persistence.OneToOne;
 import jakarta.persistence.Table;
-
-import java.math.BigDecimal;
-
-import org.slf4j.LoggerFactory;
-import org.slf4j.Logger;
+import jakarta.xml.bind.annotation.XmlAttribute;
+import jakarta.xml.bind.annotation.XmlRootElement;
 
 @Entity
 @Table(name = "user_accounts")
+@XmlRootElement
 public class UserAccount {
 
     private static final Logger logger = LoggerFactory.getLogger(UserAccount.class);
@@ -33,6 +36,7 @@ public class UserAccount {
 
     private BigDecimal balance = BigDecimal.ZERO;
 
+    @XmlAttribute
     public Long getId() {
         return id;
     }

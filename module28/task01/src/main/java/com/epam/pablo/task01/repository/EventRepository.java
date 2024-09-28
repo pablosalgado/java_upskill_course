@@ -13,4 +13,6 @@ public interface EventRepository extends JpaRepository<Event, Long> {
 
     Page<Event> findByDate(Date date, Pageable pageable);
 
+    Event findByTitle(String title);
+
 }

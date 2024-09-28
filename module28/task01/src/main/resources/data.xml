@@ -1,93 +1,68 @@
-<?xml version="1.0" encoding="UTF-8"?>
-<Entities>
-    <Users>
-        <User>
-            <Id>1</Id>
-            <Name>John Doe</Name>
-            <Email>john.doe@example.com</Email>
-            <InitalBalance>100.00</InitalBalance>
-        </User>
-        <User>
-            <Id>2</Id>
-            <Name>Jane Doe</Name>
-            <Email>jane.doe@example.com</Email>
-            <InitalBalance>200.00</InitalBalance>
-        </User>
-        <User>
-            <Id>3</Id>
-            <Name>Tom Smith</Name>
-            <Email>tom.smith@example.com</Email>
-            <InitalBalance>300.00</InitalBalance>
-        </User>
-    </Users>
-    <Events>
-        <Event>
-            <Id>1</Id>
-            <Title>Concert</Title>
-            <Date>2023-12-01T20:00:00</Date>
-            <TicketPrice>50.00</TicketPrice>
-        </Event>
-        <Event>
-            <Id>2</Id>
-            <Title>Conference</Title>
-            <Date>2023-12-02T10:00:00</Date>
-            <TicketPrice>100.00</TicketPrice>
-        </Event>
-        <Event>
-            <Id>3</Id>
-            <Title>Exhibition</Title>
-            <Date>2023-12-03T09:00:00</Date>
-            <TicketPrice>20.00</TicketPrice>
-        </Event>
-        <Event>
-            <Id>4</Id>
-            <Title>Workshop</Title>
-            <Date>2023-12-04T14:00:00</Date>
-            <TicketPrice>30.00</TicketPrice>
-        </Event>
-    </Events>
-    <Tickets>
-        <Ticket>
-            <Id>1</Id>
-            <UserId>1</UserId>
-            <EventId>1</EventId>
-            <Place>42</Place>
-            <Category>PREMIUM</Category>
-        </Ticket>
-        <Ticket>
-            <Id>2</Id>
-            <UserId>1</UserId>
-            <EventId>3</EventId>
-            <Place>1</Place>
-            <Category>STANDARD</Category>
-        </Ticket>
-        <Ticket>
-            <Id>3</Id>
-            <UserId>2</UserId>
-            <EventId>2</EventId>
-            <Place>1</Place>
-            <Category>BAR</Category>
-        </Ticket>
-        <Ticket>
-            <Id>4</Id>
-            <UserId>2</UserId>
-            <EventId>3</EventId>
-            <Place>1</Place>
-            <Category>STANDARD</Category>
-        </Ticket>
-        <Ticket>
-            <Id>5</Id>
-            <UserId>2</UserId>
-            <EventId>4</EventId>
-            <Place>1</Place>
-            <Category>STANDARD</Category>
-        </Ticket>
-        <Ticket>
-            <Id>6</Id>
-            <UserId>3</UserId>
-            <EventId>1</EventId>
-            <Place>1</Place>
-            <Category>STANDARD</Category>
-        </Ticket>
-    </Tickets>
-</Entities>
+<?xml version="1.0" encoding="UTF-8" standalone="yes"?>
+<tickets>
+    <ticket id="1">
+        <category>PREMIUM</category>
+        <event id="1">
+            <title>Event1</title>
+            <date>2024-09-29T11:56:07.434279537</date>
+            <ticketPrice>100.0</ticketPrice>
+        </event>
+        <place>1</place>
+        <user id="1">
+            <email>user1@example.com</email>
+            <name>User1</name>
+        </user>
+    </ticket>
+    <ticket id="2">
+        <category>PREMIUM</category>
+        <event id="2">
+            <title>Event2</title>
+            <date>2024-09-30T11:56:07.434371276</date>
+            <ticketPrice>200.0</ticketPrice>
+        </event>
+        <place>2</place>
+        <user id="2">
+            <email>user2@example.com</email>
+            <name>User2</name>
+        </user>
+    </ticket>
+    <ticket id="3">
+        <category>PREMIUM</category>
+        <event id="3">
+            <title>Event3</title>
+            <date>2024-10-01T11:56:07.434420332</date>
+            <ticketPrice>300.0</ticketPrice>
+        </event>
+        <place>3</place>
+        <user id="3">
+            <email>user3@example.com</email>
+            <name>User3</name>
+        </user>
+    </ticket>
+    <ticket id="4">
+        <category>PREMIUM</category>
+        <event id="4">
+            <title>Event4</title>
+            <date>2024-10-02T11:56:07.434452149</date>
+            <ticketPrice>400.0</ticketPrice>
+        </event>
+        <place>4</place>
+        <user id="4">
+            <email>user4@example.com</email>
+            <name>User4</name>
+        </user>
+    </ticket>
+    <ticket id="5">
+        <category>PREMIUM</category>
+        <event id="5">
+            <title>Event5</title>
+            <date>2024-10-03T11:56:07.434484749</date>
+            <ticketPrice>500.0</ticketPrice>
+        </event>
+        <place>5</place>
+        <user id="5">
+            <email>user5@example.com</email>
+            <name>User5</name>
+        </user>
+    </ticket>
+</tickets>
