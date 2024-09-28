@@ -1,6 +1,10 @@
 package com.epam.pablo.task01.controller;
 
+import java.io.ByteArrayInputStream;
+
 import org.springframework.data.domain.Page;
+import org.springframework.http.HttpHeaders;
+import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -15,6 +19,8 @@ import com.epam.pablo.task01.facade.BookingFacade;
 import com.epam.pablo.task01.model.Ticket;
 import com.epam.pablo.task01.model.User;
 import com.epam.pablo.task01.repository.EventRepository;
+import org.springframework.core.io.InputStreamResource;
+import org.springframework.http.MediaType;
 
 @Controller
 @RequestMapping("/tickets")
@@ -85,6 +91,30 @@ public class TicketController {
     public String seedTickets() {
         bookingFacade.preloadTickets();
         return "redirect:/tickets";
+    }
+
+    @GetMapping("/download")
+    public ResponseEntity<InputStreamResource> downloadAllTickets() {
+        ByteArrayInputStream bis = bookingFacade.generateTicketsPdf();
+        HttpHeaders headers = new HttpHeaders();
+        headers.add("Content-Disposition", "inline; filename=tickets.pdf");
+
+        return ResponseEntity.ok()
+                .headers(headers)
+                .contentType(MediaType.APPLICATION_PDF)
+                .body(new InputStreamResource(bis));
+    }
+
+    @GetMapping("/download/user/{userId}")
+    public ResponseEntity<InputStreamResource> downloadTicketsByUser(@PathVariable Long userId) {
+        ByteArrayInputStream bis = bookingFacade.generateUserTicketsPdf(userId);
+        HttpHeaders headers = new HttpHeaders();
+        headers.add("Content-Disposition", "inline; filename=user_tickets.pdf");
+
+        return ResponseEntity.ok()
+                .headers(headers)
+                .contentType(MediaType.APPLICATION_PDF)
+                .body(new InputStreamResource(bis));
     }
 
 }

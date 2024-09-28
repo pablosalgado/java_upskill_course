@@ -1,5 +1,6 @@
 package com.epam.pablo.task01.facade;
 
+import java.io.ByteArrayInputStream;
 import java.math.BigDecimal;
 import java.util.Date;
 import java.util.List;
@@ -231,5 +232,9 @@ public interface BookingFacade {
      * @param file the MultipartFile containing ticket data to be preloaded
      */
     void preloadTickets(MultipartFile file);
+
+    ByteArrayInputStream generateTicketsPdf();
+
+    ByteArrayInputStream generateUserTicketsPdf(Long userId);
 
 }
