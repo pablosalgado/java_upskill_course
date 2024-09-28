@@ -23,7 +23,7 @@
                     <td><a th:href="@{/events/{id}(id=${ticket.event.id})}" th:text="${ticket.event.title}"></a></td>
                     <td th:text="${#temporals.format(ticket.event.date, 'yyyy-MM-dd HH:mm')}"></td>
                     <td>
-                        <a th:href="@{/tickets/delete/{id}(id=${ticket.id})}" class="btn btn-danger">Cancel</a>
+                        <a th:href="@{/tickets/delete/{id}(id=${ticket.id})}" class="btn btn-danger">Cancel and Refund</a>
                     </td>
                 </tr>
             </tbody>
