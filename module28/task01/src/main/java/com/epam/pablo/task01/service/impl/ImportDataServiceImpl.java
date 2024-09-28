@@ -22,6 +22,8 @@ import com.epam.pablo.task01.repository.EventRepository;
 import com.epam.pablo.task01.repository.TicketRepository;
 import com.epam.pablo.task01.repository.UserRepository;
 import com.epam.pablo.task01.service.ImportDataService;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 @Service
 public class ImportDataServiceImpl implements ImportDataService {
@@ -31,7 +33,7 @@ public class ImportDataServiceImpl implements ImportDataService {
     private final EventRepository eventRepository;
     private final TicketRepository ticketRepository;
     private final UserRepository userRepository;
-    
+    Logger logger = LoggerFactory.getLogger(ImportDataServiceImpl.class);
 
     public ImportDataServiceImpl(ResourceLoader resourceLoader, Jaxb2Marshaller marshaller, TicketRepository ticketRepository, EventRepository eventRepository, UserRepository userRepository) {
         this.resourceLoader = resourceLoader;
@@ -59,8 +61,10 @@ public class ImportDataServiceImpl implements ImportDataService {
             throw new RuntimeException("Failed to load file input stream", e);
         }
     }
-        
+    
     private void preloadTickets(InputStream inputStream) {
+        logger.info("Starting to preload tickets from input stream");
+
         ticketRepository.deleteAll();
         eventRepository.deleteAll();
         userRepository.deleteAll();
@@ -80,6 +84,8 @@ public class ImportDataServiceImpl implements ImportDataService {
 
             ticketRepository.save(ticket);
         }
+
+        logger.info("Finished preloading tickets from input stream");
     }
 
     private User findOrSaveUser(User user, Map<String, User> userMap) {
