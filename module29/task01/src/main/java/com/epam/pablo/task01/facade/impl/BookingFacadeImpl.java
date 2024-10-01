@@ -4,6 +4,7 @@ import java.io.ByteArrayInputStream;
 import java.math.BigDecimal;
 import java.util.Date;
 import java.util.List;
+import java.util.Optional;
 
 import com.epam.pablo.task01.service.ImportDataService;
 import com.epam.pablo.task01.service.ExportPdfService;
@@ -69,7 +70,7 @@ public class BookingFacadeImpl implements BookingFacade {
     }
 
     @Override
-    public User getUserById(long id) {
+    public Optional<User> getUserById(long id) {
         return userService.getUserById(id);
     }
 

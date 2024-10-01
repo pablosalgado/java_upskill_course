@@ -12,6 +12,7 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
 import java.util.Arrays;
+import java.util.Optional;
 
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
@@ -83,7 +84,7 @@ public class UserControllerTest {
 
     @Test
     public void getUserReturnsNotFoundWhenUserDoesNotExist() throws Exception {
-        when(bookingFacade.getUserById(1L)).thenReturn(null);
+        when(bookingFacade.getUserById(1L)).thenReturn(Optional.empty());
 
         mockMvc.perform(get("/users/1"))
                 .andExpect(status().isNotFound());

@@ -4,7 +4,6 @@ import java.math.BigDecimal;
 import java.util.List;
 import java.util.Optional;
 
-import jakarta.validation.Valid;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -18,7 +17,6 @@ import com.epam.pablo.task01.exception.UserNotFoundException;
 import com.epam.pablo.task01.model.User;
 import com.epam.pablo.task01.repository.UserRepository;
 import com.epam.pablo.task01.service.UserService;
-import org.springframework.validation.annotation.Validated;
 
 @Service
 public class UserServiceImpl implements UserService {
@@ -30,10 +28,9 @@ public class UserServiceImpl implements UserService {
 
     @Override
     @Transactional(readOnly = true)
-    public User getUserById(long userId) {
+    public Optional<User> getUserById(long userId) {
         logger.debug("Fetching user by ID: {}", userId);
-        Optional<User> user = userRepository.findById(userId);
-        return user.orElse(null);
+        return userRepository.findById(userId);
     }
 
     @Override

@@ -40,7 +40,7 @@ public class UserServiceImplTest {
     public void testGetUserById() {
         User user = new User();
         when(userRepository.findById(1L)).thenReturn(Optional.of(user));
-        User result = userService.getUserById(1L);
+        User result = userService.getUserById(1L).get();
         verify(userRepository).findById(1L);
         assertEquals(user, result);
     }

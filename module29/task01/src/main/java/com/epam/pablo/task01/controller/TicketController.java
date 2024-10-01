@@ -1,19 +1,14 @@
 package com.epam.pablo.task01.controller;
 
 import java.io.ByteArrayInputStream;
+import java.util.List;
+import java.util.Optional;
 
 import org.springframework.data.domain.Page;
 import org.springframework.http.HttpHeaders;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
-import org.springframework.stereotype.Controller;
-import org.springframework.ui.Model;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.ModelAttribute;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestParam;
-import org.springframework.web.multipart.MultipartFile;
+import org.springframework.web.bind.annotation.*;
 
 import com.epam.pablo.task01.facade.BookingFacade;
 import com.epam.pablo.task01.model.Ticket;
@@ -21,8 +16,9 @@ import com.epam.pablo.task01.model.User;
 import com.epam.pablo.task01.repository.EventRepository;
 import org.springframework.core.io.InputStreamResource;
 import org.springframework.http.MediaType;
+import org.springframework.web.multipart.MultipartFile;
 
-@Controller
+@RestController
 @RequestMapping("/tickets")
 public class TicketController {
 
@@ -37,60 +33,58 @@ public class TicketController {
     }
 
     @GetMapping
-    public String listAllTickets(Model model,
-                            @RequestParam(defaultValue = DEFAULT_PAGE_NUM) int page,
-                            @RequestParam(defaultValue = DEFAULT_PAGE_SIZE) int size) {
+    public ResponseEntity<List<Ticket>> listAllTickets(@RequestParam(defaultValue = DEFAULT_PAGE_NUM) int page,
+                                                       @RequestParam(defaultValue = DEFAULT_PAGE_SIZE) int size) {
         Page<Ticket> ticketPage = bookingFacade.getBookedTickets(size, page);
-        model.addAttribute("tickets", ticketPage.getContent());
-        model.addAttribute("currentPage", page);
-        model.addAttribute("totalPages", ticketPage.getTotalPages());
-        return "tickets/index";
+        return new ResponseEntity<>(ticketPage.getContent(), HttpStatus.OK);
     }
 
     @GetMapping("/user/{userId}")
-    public String listTicketsByUser(Model model, @PathVariable Long userId,
-                            @RequestParam(defaultValue = DEFAULT_PAGE_NUM) int page,
-                            @RequestParam(defaultValue = DEFAULT_PAGE_SIZE) int size) {
-        User user = bookingFacade.getUserById(userId);
-        Page<Ticket> ticketPage = bookingFacade.getBookedTicketsByUser(user, size, page);
-        model.addAttribute("tickets", ticketPage.getContent());
-        model.addAttribute("user", user);
-        model.addAttribute("currentPage", page);
-        model.addAttribute("totalPages", ticketPage.getTotalPages());
-        return "tickets/list";
+    public ResponseEntity<List<Ticket>> listTicketsByUser(@PathVariable Long userId,
+                                                          @RequestParam(defaultValue = DEFAULT_PAGE_NUM) int page,
+                                                          @RequestParam(defaultValue = DEFAULT_PAGE_SIZE) int size) {
+        return bookingFacade.getUserById(userId)
+                .map(user -> {
+                    Page<Ticket> ticketPage = bookingFacade.getBookedTicketsByUser(user, size, page);
+                    return new ResponseEntity<>(ticketPage.getContent(), HttpStatus.OK);
+                })
+                .orElseGet(() -> new ResponseEntity<>(HttpStatus.NOT_FOUND));
     }
 
     @GetMapping("/new/{userId}")
-    public String newTicket(Model model, @PathVariable Long userId) {
-        model.addAttribute("ticket", new Ticket());
-        model.addAttribute("user", bookingFacade.getUserById(userId));
-        model.addAttribute("events", eventService.findAll());
-        return "tickets/new";
+    public ResponseEntity<Ticket> newTicket(@PathVariable Long userId) {
+        Ticket ticket = new Ticket();
+        Optional<User> userOptional = bookingFacade.getUserById(userId);
+        if (userOptional.isPresent()) {
+            ticket.setUser(userOptional.get());
+            return new ResponseEntity<>(ticket, HttpStatus.OK);
+        } else {
+            return new ResponseEntity<>(HttpStatus.NOT_FOUND);
+        }
     }
 
     @PostMapping
-    public String createTicket(@ModelAttribute Ticket ticket, @RequestParam("userId") Long userId) {
-        bookingFacade.bookTicket(userId, ticket.getEvent().getId(), ticket.getPlace(), ticket.getCategory());
-        return "redirect:/users";
+    public ResponseEntity<Ticket> createTicket(@RequestBody Ticket ticket, @RequestParam("userId") Long userId) {
+        Ticket createdTicket = bookingFacade.bookTicket(userId, ticket.getEvent().getId(), ticket.getPlace(), ticket.getCategory());
+        return new ResponseEntity<>(createdTicket, HttpStatus.CREATED);
     }
 
-    @GetMapping("/delete/{id}")
-    public String deleteTicket(@PathVariable Long id) {
-        Ticket ticket = bookingFacade.getTicketById(id); 
+    @DeleteMapping("/{id}")
+    public ResponseEntity<Void> deleteTicket(@PathVariable Long id) {
         bookingFacade.cancelTicket(id);
-        return "redirect:/tickets/user/" + ticket.getUser().getId();
+        return new ResponseEntity<>(HttpStatus.NO_CONTENT);
     }
 
     @PostMapping("/upload")
-    public String uploadDefaultTickets(@RequestParam("file") MultipartFile file, Model model) {
+    public ResponseEntity<Void> uploadDefaultTickets(@RequestParam("file") MultipartFile file) {
         bookingFacade.preloadTickets(file);
-        return "redirect:/tickets";
+        return new ResponseEntity<>(HttpStatus.OK);
     }
 
-    @PostMapping("/seed")    
-    public String seedTickets() {
+    @PostMapping("/seed")
+    public ResponseEntity<Void> seedTickets() {
         bookingFacade.preloadTickets();
-        return "redirect:/tickets";
+        return new ResponseEntity<>(HttpStatus.OK);
     }
 
     @GetMapping("/download")
@@ -116,5 +110,4 @@ public class TicketController {
                 .contentType(MediaType.APPLICATION_PDF)
                 .body(new InputStreamResource(bis));
     }
-
 }

@@ -2,6 +2,7 @@ package com.epam.pablo.task01.service;
 
 import java.math.BigDecimal;
 import java.util.List;
+import java.util.Optional;
 
 import org.springframework.data.domain.Page;
 
@@ -15,7 +16,7 @@ public interface UserService {
      * @param userId the unique identifier of the user to be retrieved
      * @return the user associated with the specified identifier
      */
-    User getUserById(long userId);
+    Optional<User> getUserById(long userId);
 
     /**
      * Retrieves a user by their email address.

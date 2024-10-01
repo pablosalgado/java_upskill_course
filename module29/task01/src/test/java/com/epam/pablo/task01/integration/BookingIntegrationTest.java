@@ -71,7 +71,7 @@ class BookingIntegrationTest {
     @Test
     public void testCreateAndRetrieveUser() {
         User createdUser = createUser("John Doe", "john.doe@example.com");
-        User retrievedUser = bookingFacade.getUserById(createdUser.getId());
+        User retrievedUser = bookingFacade.getUserById(createdUser.getId()).get();
 
         assertNotNull(retrievedUser);
         assertEquals("john.doe@example.com", retrievedUser.getEmail());
@@ -107,12 +107,12 @@ class BookingIntegrationTest {
         Ticket ticket = bookingFacade.bookTicket(createdUser.getId(), createdEvent.getId(), 1, Ticket.Category.PREMIUM);
         assertNotNull(ticket);
 
-        assertEquals(new BigDecimal("50.00"), bookingFacade.getUserById(createdUser.getId()).getAccountBalance());
+        assertEquals(new BigDecimal("50.00"), bookingFacade.getUserById(createdUser.getId()).get().getAccountBalance());
 
         boolean canceled = bookingFacade.cancelTicket(ticket.getId());
         assertTrue(canceled);
 
-        assertEquals(new BigDecimal("100.00"), bookingFacade.getUserById(createdUser.getId()).getAccountBalance());
+        assertEquals(new BigDecimal("100.00"), bookingFacade.getUserById(createdUser.getId()).get().getAccountBalance());
     }
 
     @Test

@@ -8,6 +8,7 @@ import static org.mockito.Mockito.when;
 import java.math.BigDecimal;
 import java.util.Date;
 import java.util.List;
+import java.util.Optional;
 
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
@@ -118,9 +119,9 @@ class BookingFacadeImplTest {
     void testGetUserById() {
         long userId = 1L;
         User user = new User();
-        when(userService.getUserById(userId)).thenReturn(user);
+        when(userService.getUserById(userId)).thenReturn(Optional.of(user));
 
-        User result = bookingFacade.getUserById(userId);
+        User result = bookingFacade.getUserById(userId).get();
 
         verify(userService).getUserById(userId);
         assertSame(user, result);

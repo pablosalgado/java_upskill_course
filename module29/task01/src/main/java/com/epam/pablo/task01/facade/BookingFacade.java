@@ -4,6 +4,7 @@ import java.io.ByteArrayInputStream;
 import java.math.BigDecimal;
 import java.util.Date;
 import java.util.List;
+import java.util.Optional;
 
 import org.springframework.data.domain.Page;
 import org.springframework.web.multipart.MultipartFile;
@@ -77,10 +78,10 @@ public interface BookingFacade {
 
     /**
      * Gets user by its id.
-     * 
+     *
      * @return User.
      */
-    User getUserById(long userId);
+    Optional<User> getUserById(long userId);
 
     /**
      * Gets user by its email. Email is strictly matched.
