@@ -1,21 +1,14 @@
 package com.epam.pablo.task01.model;
 
-import java.math.BigDecimal;
-import java.util.List;
-
-import jakarta.persistence.CascadeType;
-import jakarta.persistence.Column;
-import jakarta.persistence.Entity;
-import jakarta.persistence.GeneratedValue;
-import jakarta.persistence.GenerationType;
-import jakarta.persistence.Id;
-import jakarta.persistence.OneToMany;
-import jakarta.persistence.OneToOne;
-import jakarta.persistence.Table;
-import jakarta.xml.bind.annotation.XmlAttribute;
-import jakarta.xml.bind.annotation.XmlRootElement;
+import jakarta.persistence.*;
 import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.NotNull;
+import jakarta.xml.bind.annotation.XmlAttribute;
+import jakarta.xml.bind.annotation.XmlRootElement;
+
+import java.math.BigDecimal;
+
+import static jakarta.persistence.CascadeType.ALL;
 
 @Entity
 @Table(name = "users")
@@ -33,11 +26,8 @@ public class User {
     @Column(unique = true, nullable = false)
     private String email;
 
-    @OneToOne(mappedBy = "user", cascade = CascadeType.ALL, orphanRemoval = true)
+    @OneToOne(mappedBy = "user", cascade = ALL, orphanRemoval = true)
     private final UserAccount userAccount;
-
-    @OneToMany(mappedBy = "user")
-    private List<Ticket> tickets;
 
     public User() {
         userAccount = new UserAccount();
@@ -84,10 +74,6 @@ public class User {
 
     public BigDecimal getAccountBalance() {
         return userAccount.getBalance();
-    }
-
-    public List<Ticket> getTickets() {
-        return tickets;
     }
 
 }

@@ -4,6 +4,9 @@ import java.io.ByteArrayInputStream;
 import java.util.List;
 import java.util.Optional;
 
+import com.epam.pablo.task01.exception.InsufficientFundsException;
+import com.epam.pablo.task01.exception.UserNotFoundException;
+import org.springframework.context.annotation.Profile;
 import org.springframework.data.domain.Page;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
@@ -20,6 +23,7 @@ import org.springframework.web.multipart.MultipartFile;
 
 @RestController
 @RequestMapping("/tickets")
+@Profile("sync")
 public class TicketController {
 
     private static final String DEFAULT_PAGE_SIZE = "10";
@@ -51,22 +55,14 @@ public class TicketController {
                 .orElseGet(() -> new ResponseEntity<>(HttpStatus.NOT_FOUND));
     }
 
-    @GetMapping("/new/{userId}")
-    public ResponseEntity<Ticket> newTicket(@PathVariable Long userId) {
-        Ticket ticket = new Ticket();
-        Optional<User> userOptional = bookingFacade.getUserById(userId);
-        if (userOptional.isPresent()) {
-            ticket.setUser(userOptional.get());
-            return new ResponseEntity<>(ticket, HttpStatus.OK);
-        } else {
-            return new ResponseEntity<>(HttpStatus.NOT_FOUND);
+    @PostMapping("/user/{userId}")
+    public ResponseEntity<Ticket> createTicket(@RequestBody Ticket ticket, @PathVariable Long userId) {
+        try {
+            Ticket createdTicket = bookingFacade.bookTicket(userId, ticket.getEvent().getId(), ticket.getPlace(), ticket.getCategory());
+            return ResponseEntity.ok(createdTicket);
+        } catch (Exception e) {
+            return ResponseEntity.badRequest().build();
         }
-    }
-
-    @PostMapping
-    public ResponseEntity<Ticket> createTicket(@RequestBody Ticket ticket, @RequestParam("userId") Long userId) {
-        Ticket createdTicket = bookingFacade.bookTicket(userId, ticket.getEvent().getId(), ticket.getPlace(), ticket.getCategory());
-        return new ResponseEntity<>(createdTicket, HttpStatus.CREATED);
     }
 
     @DeleteMapping("/{id}")

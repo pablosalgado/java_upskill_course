@@ -1,8 +1,9 @@
 package com.epam.pablo.task01.controller;
 
-import com.epam.pablo.task01.exception.UserNotFoundException;
 import com.epam.pablo.task01.facade.BookingFacade;
 import com.epam.pablo.task01.model.User;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.data.domain.Page;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -10,12 +11,12 @@ import org.springframework.web.bind.annotation.*;
 
 import java.math.BigDecimal;
 import java.util.List;
-import java.util.Optional;
 
 @RestController
 @RequestMapping("/users")
 public class UserController {
 
+    private static final Logger logger = LoggerFactory.getLogger(UserController.class);
     private static final String DEFAULT_PAGE_SIZE = "10";
     private static final String DEFAULT_PAGE_NUM = "0";
     private final BookingFacade bookingFacade;
@@ -28,59 +29,57 @@ public class UserController {
     public ResponseEntity<List<User>> listUsers(@RequestParam(defaultValue = DEFAULT_PAGE_NUM) int page,
                                                 @RequestParam(defaultValue = DEFAULT_PAGE_SIZE) int size) {
         Page<User> userPage = bookingFacade.getAllUsers(size, page);
-        return new ResponseEntity<>(userPage.getContent(), HttpStatus.OK);
+        return ResponseEntity.ok(userPage.getContent());
     }
 
     @GetMapping("/{id}")
     public ResponseEntity<User> getUser(@PathVariable Long id) {
         return bookingFacade.getUserById(id)
-                .map(user -> new ResponseEntity<>(user, HttpStatus.OK))
-                .orElseGet(() -> new ResponseEntity<>(HttpStatus.NOT_FOUND));
+                .map(ResponseEntity::ok)
+                .orElseGet(() -> ResponseEntity.notFound().build());
     }
 
     @PostMapping
     public ResponseEntity<User> createUser(@RequestBody User user) {
-        return Optional.ofNullable(user)
-                .map(this::safelyCreateUser)
-                .orElse(new ResponseEntity<>(HttpStatus.BAD_REQUEST));
-    }
-
-    private ResponseEntity<User> safelyCreateUser(User user) {
         try {
             User createdUser = bookingFacade.createUser(user);
-            return new ResponseEntity<>(createdUser, HttpStatus.CREATED);
+            return ResponseEntity.status(HttpStatus.CREATED).body(createdUser);
         } catch (Exception e) {
-            return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
+            logger.error("User creation failed due to: {}", e.getMessage());
+            return ResponseEntity.badRequest().build();
         }
     }
 
     @PutMapping("/{id}")
     public ResponseEntity<User> updateUser(@PathVariable Long id, @RequestBody User user) {
-        return Optional.ofNullable(user)
-                .map(u -> safelyUpdateUser(id, u))
-                .orElse(new ResponseEntity<>(HttpStatus.BAD_REQUEST));
-    }
-
-    private ResponseEntity<User> safelyUpdateUser(Long id, User u) {
         try {
-            User updatedUser = bookingFacade.updateUser(id, u);
-            return new ResponseEntity<>(updatedUser, HttpStatus.OK);
-        } catch (UserNotFoundException e) {
-            return new ResponseEntity<>(HttpStatus.NOT_FOUND);
+            User updatedUser = bookingFacade.updateUser(id, user);
+            return ResponseEntity.ok(updatedUser);
         } catch (Exception e) {
-            return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
+            logger.error("User update failed due to: {}", e.getMessage());
+            return ResponseEntity.badRequest().build();
         }
     }
 
     @DeleteMapping("/{id}")
     public ResponseEntity<Void> deleteUser(@PathVariable Long id) {
-        bookingFacade.deleteUser(id);
-        return new ResponseEntity<>(HttpStatus.NO_CONTENT);
+        try {
+            bookingFacade.deleteUser(id);
+            return ResponseEntity.noContent().build();
+        } catch (Exception e) {
+            logger.error("User deletion failed due to: {}", e.getMessage());
+            return ResponseEntity.notFound().build();
+        }
     }
 
     @PostMapping("/{id}/refill")
-    public ResponseEntity<Void> refillAccount(@PathVariable Long id, @RequestParam String amount) {
-        bookingFacade.refillAccount(id, BigDecimal.valueOf(Double.parseDouble(amount)));
-        return new ResponseEntity<>(HttpStatus.OK);
+    public ResponseEntity<Void> refillAccount(@PathVariable Long id, @RequestParam BigDecimal amount) {
+        try {
+            bookingFacade.refillAccount(id, amount);
+            return ResponseEntity.ok().build();
+        } catch (Exception e) {
+            logger.error("Account refill failed due to: {}", e.getMessage());
+            return ResponseEntity.notFound().build();
+        }
     }
 }

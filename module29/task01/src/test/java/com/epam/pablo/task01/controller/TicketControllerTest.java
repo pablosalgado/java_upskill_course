@@ -10,18 +10,21 @@ import org.mockito.Mock;
 import org.mockito.MockitoAnnotations;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageImpl;
+import org.springframework.http.MediaType;
+import org.springframework.mock.web.MockMultipartFile;
 import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.test.web.servlet.setup.MockMvcBuilders;
+import org.springframework.web.multipart.MultipartFile;
 
+import java.io.ByteArrayInputStream;
 import java.util.Arrays;
 import java.util.Optional;
 
 import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
-import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
-import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.jsonPath;
-import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
+import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.*;
+import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.*;
 
 public class TicketControllerTest {
 
@@ -77,12 +80,80 @@ public class TicketControllerTest {
     }
 
     @Test
-    public void newTicketReturnsNotFoundWhenUserDoesNotExist() throws Exception {
-        when(bookingFacade.getUserById(1L)).thenReturn(Optional.empty());
+    public void createTicketReturnsCreatedTicket() throws Exception {
+        Ticket ticket = new Ticket();
+        ticket.setId(1L);
 
-        mockMvc.perform(get("/tickets/new/1"))
-                .andExpect(status().isNotFound());
+        when(bookingFacade.bookTicket(any(Long.class), any(Long.class), any(Integer.class), any(Ticket.Category.class))).thenReturn(ticket);
 
-        verify(bookingFacade).getUserById(1L);
+        mockMvc.perform(post("/tickets/user/1")
+                        .contentType(MediaType.APPLICATION_JSON)
+                        .accept(MediaType.APPLICATION_JSON)
+                        .content("""
+                                {
+                                    "event": {
+                                        "id": 1
+                                    },
+                                    "place": 1,
+                                    "category": "STANDARD"
+                                }
+                                """)
+                        .param("userId", "1"))
+                .andExpect(status().isOk())
+                .andExpect(jsonPath("$.id").value(1L));
+
+        verify(bookingFacade).bookTicket(any(Long.class), any(Long.class), any(Integer.class), any(Ticket.Category.class));
+    }
+
+    @Test
+    public void deleteTicketReturnsNoContent() throws Exception {
+        mockMvc.perform(delete("/tickets/1"))
+                .andExpect(status().isNoContent());
+
+        verify(bookingFacade).cancelTicket(1L);
+    }
+
+    @Test
+    public void uploadDefaultTicketsReturnsOk() throws Exception {
+        MockMultipartFile file = new MockMultipartFile("file", "tickets.csv", "text/csv", "some data".getBytes());
+
+        mockMvc.perform(multipart("/tickets/upload").file(file))
+                .andExpect(status().isOk());
+
+        verify(bookingFacade).preloadTickets(any(MultipartFile.class));
+    }
+
+    @Test
+    public void seedTicketsReturnsOk() throws Exception {
+        mockMvc.perform(post("/tickets/seed"))
+                .andExpect(status().isOk());
+
+        verify(bookingFacade).preloadTickets();
+    }
+
+    @Test
+    public void downloadAllTicketsReturnsPdf() throws Exception {
+        ByteArrayInputStream bis = new ByteArrayInputStream("PDF content".getBytes());
+        when(bookingFacade.generateTicketsPdf()).thenReturn(bis);
+
+        mockMvc.perform(get("/tickets/download"))
+                .andExpect(status().isOk())
+                .andExpect(header().string("Content-Disposition", "inline; filename=tickets.pdf"))
+                .andExpect(content().contentType(MediaType.APPLICATION_PDF));
+
+        verify(bookingFacade).generateTicketsPdf();
+    }
+
+    @Test
+    public void downloadTicketsByUserReturnsPdf() throws Exception {
+        ByteArrayInputStream bis = new ByteArrayInputStream("PDF content".getBytes());
+        when(bookingFacade.generateUserTicketsPdf(1L)).thenReturn(bis);
+
+        mockMvc.perform(get("/tickets/download/user/1"))
+                .andExpect(status().isOk())
+                .andExpect(header().string("Content-Disposition", "inline; filename=user_tickets.pdf"))
+                .andExpect(content().contentType(MediaType.APPLICATION_PDF));
+
+        verify(bookingFacade).generateUserTicketsPdf(1L);
     }
 }
