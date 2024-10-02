@@ -7,6 +7,7 @@ import org.springframework.context.annotation.Profile;
 import org.springframework.data.domain.Page;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.jms.core.JmsTemplate;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -17,21 +18,22 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
-import com.epam.pablo.task01.exception.EventNotFoundException;
 import com.epam.pablo.task01.facade.BookingFacade;
 import com.epam.pablo.task01.model.Event;
 
 @RestController
 @RequestMapping("/events")
-@Profile("sync")
-public class EventController {
+@Profile("async")
+public class AsyncEventController {
 
     private static final String DEFAULT_PAGE_SIZE = "10";
     private static final String DEFAULT_PAGE_NUM = "0";
     private final BookingFacade bookingFacade;
+    private final JmsTemplate jmsTemplate;
 
-    public EventController(BookingFacade bookingFacade) {
+    public AsyncEventController(JmsTemplate jmsTemplate, BookingFacade bookingFacade) {
         this.bookingFacade = bookingFacade;
+        this.jmsTemplate = jmsTemplate;
     }
 
     @GetMapping
@@ -49,42 +51,21 @@ public class EventController {
     }
 
     @PostMapping
-    public ResponseEntity<Event> createEvent(@RequestBody Event event) {
-            return  Optional.ofNullable(event)
-                    .map(this::safelyCreateEvent)
-                    .orElse(new ResponseEntity<>(HttpStatus.BAD_REQUEST));
-    }
-
-    private ResponseEntity<Event> safelyCreateEvent(Event event) {
-        try {
-            Event createdEvent = bookingFacade.createEvent(event);
-            return new ResponseEntity<>(createdEvent, HttpStatus.CREATED);
-        } catch (Exception e) {
-            return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
-        }
+    public ResponseEntity<String> createEvent(@RequestBody String event) {
+        jmsTemplate.convertAndSend("createEventQueue", event);
+        return new ResponseEntity<>("Event creation request received", HttpStatus.ACCEPTED);
     }
 
     @PutMapping("/{id}")
-    public ResponseEntity<Event> updateEvent(@PathVariable Long id, @RequestBody Event event) {
-        return Optional.ofNullable(event)
-                .map(e -> safelyUpdateEvent(id, e))
-                .orElse(new ResponseEntity<>(HttpStatus.BAD_REQUEST));
-    }
-
-    private ResponseEntity<Event> safelyUpdateEvent(Long id, Event event) {
-        try {
-            Event updatedEvent = bookingFacade.updateEvent(id, event);
-            return new ResponseEntity<>(updatedEvent, HttpStatus.OK);
-        } catch (EventNotFoundException e) {
-            return new ResponseEntity<>(HttpStatus.NOT_FOUND);
-        } catch (Exception e) {
-            return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
-        }
+    public ResponseEntity<String> updateEvent(@PathVariable Long id, @RequestBody String event) {
+        jmsTemplate.convertAndSend("updateEventQueue", new Object[]{id, event});
+        return new ResponseEntity<>("Event update request received", HttpStatus.ACCEPTED);
     }
 
     @DeleteMapping("/{id}")
-    public ResponseEntity<Void> deleteEvent(@PathVariable Long id) {
-        bookingFacade.deleteEvent(id);
-        return new ResponseEntity<>(HttpStatus.NO_CONTENT);
+    public ResponseEntity<String> deleteEvent(@PathVariable Long id) {
+        jmsTemplate.convertAndSend("deleteEventQueue", id);
+        return new ResponseEntity<>("Event deletion request received", HttpStatus.ACCEPTED);
     }
+
 }

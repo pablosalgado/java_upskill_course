@@ -234,8 +234,19 @@ public interface BookingFacade {
      */
     void preloadTickets(MultipartFile file);
 
+    /**
+     * Generates a PDF containing the tickets.
+     *
+     * @return a ByteArrayInputStream representing the generated PDF.
+     */
     ByteArrayInputStream generateTicketsPdf();
 
+    /**
+     * Generates a PDF containing the tickets for a specific user.
+     *
+     * @param userId the ID of the user whose tickets are to be generated
+     * @return a ByteArrayInputStream containing the generated PDF data
+     */
     ByteArrayInputStream generateUserTicketsPdf(Long userId);
 
 }
