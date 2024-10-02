@@ -40,32 +40,32 @@ public class AsyncEventController {
     public ResponseEntity<List<Event>> listEvents(@RequestParam(defaultValue = DEFAULT_PAGE_NUM) int page,
                                                   @RequestParam(defaultValue = DEFAULT_PAGE_SIZE) int size) {
         Page<Event> eventPage = bookingFacade.getAllEvents(size, page);
-        return new ResponseEntity<>(eventPage.getContent(), HttpStatus.OK);
+        return ResponseEntity.ok(eventPage.getContent());
     }
 
     @GetMapping("/{id}")
     public ResponseEntity<Event> getEvent(@PathVariable Long id) {
         return Optional.ofNullable(bookingFacade.getEventById(id))
-                .map(event -> new ResponseEntity<>(event, HttpStatus.OK))
-                .orElseGet(() -> new ResponseEntity<>(HttpStatus.NOT_FOUND));
+                .map(ResponseEntity::ok)
+                .orElseGet(() -> ResponseEntity.notFound().build());
     }
 
     @PostMapping
     public ResponseEntity<String> createEvent(@RequestBody String event) {
         jmsTemplate.convertAndSend("createEventQueue", event);
-        return new ResponseEntity<>("Event creation request received", HttpStatus.ACCEPTED);
+        return ResponseEntity.accepted().body("Event creation request received");
     }
 
     @PutMapping("/{id}")
     public ResponseEntity<String> updateEvent(@PathVariable Long id, @RequestBody String event) {
         jmsTemplate.convertAndSend("updateEventQueue", new Object[]{id, event});
-        return new ResponseEntity<>("Event update request received", HttpStatus.ACCEPTED);
+        return ResponseEntity.accepted().body("Event update request received");
     }
 
     @DeleteMapping("/{id}")
     public ResponseEntity<String> deleteEvent(@PathVariable Long id) {
         jmsTemplate.convertAndSend("deleteEventQueue", id);
-        return new ResponseEntity<>("Event deletion request received", HttpStatus.ACCEPTED);
+        return ResponseEntity.accepted().body("Event deletion request received");
     }
 
 }
