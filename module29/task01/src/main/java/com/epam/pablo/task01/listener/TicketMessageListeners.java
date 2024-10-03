@@ -33,4 +33,17 @@ public class TicketMessageListeners {
             logger.error("Failed to process message: " + message, e);
         }
     }
+
+    @JmsListener(destination = "deleteTicketQueue")
+    public void onDeleteEvent(String message) {
+        logger.debug("Received message for deleteTicketQueue: " + message);
+        try {
+            Long ticketId = objectMapper.readValue(message, Long.class);
+            bookingFacade.cancelTicket(ticketId);
+            logger.info("Successfully processed deleteEventQueue message: " + message);
+        } catch (Exception e) {
+            logger.error("Failed to process message: " + message, e);
+        }
+    }
+
 }

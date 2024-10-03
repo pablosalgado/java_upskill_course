@@ -96,10 +96,9 @@ public class AsyncTicketControllerTest {
     public void createTicketReturnsAccepted() throws Exception {
         String ticketJson = "{\"event\":{\"id\":1},\"place\":1,\"category\":\"STANDARD\"}";
 
-        mockMvc.perform(post("/tickets")
+        mockMvc.perform(post("/tickets/user/1")
                         .contentType(MediaType.APPLICATION_JSON)
-                        .content(ticketJson)
-                        .param("userId", "1"))
+                        .content(ticketJson))
                 .andExpect(status().isAccepted())
                 .andExpect(content().string("Ticket creation request accepted"));
 

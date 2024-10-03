@@ -71,10 +71,22 @@ public class AsyncTicketController {
                 .orElseGet(() -> new ResponseEntity<>(HttpStatus.NOT_FOUND));
     }
 
-    @PostMapping
-    public ResponseEntity<String> createTicket(@RequestBody String ticket, @RequestParam("userId") Long userId) {
+    @PostMapping("/user/{userId}")
+    public ResponseEntity<String> createTicket(@RequestBody String ticket, @PathVariable("userId") Long userId) {
         jmsTemplate.convertAndSend("createTicketQueue", new Object[]{ticket, userId});
         return new ResponseEntity<>("Ticket creation request accepted", HttpStatus.ACCEPTED);
+    }
+
+    @DeleteMapping("/{id}")
+    public ResponseEntity<String> deleteTicket(@PathVariable Long id) {
+        jmsTemplate.convertAndSend("deleteTicketQueue", id);
+        return ResponseEntity.accepted().body("Event deletion request received");
+    }
+
+    @PostMapping("/seed")
+    public ResponseEntity<Void> seedTickets() {
+        bookingFacade.preloadTickets();
+        return new ResponseEntity<>(HttpStatus.OK);
     }
 
 }
