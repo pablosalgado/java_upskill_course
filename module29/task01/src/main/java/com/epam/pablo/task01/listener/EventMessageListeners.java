@@ -2,6 +2,7 @@ package com.epam.pablo.task01.listener;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springframework.context.annotation.Profile;
 import org.springframework.jms.annotation.JmsListener;
 import org.springframework.stereotype.Component;
 
@@ -10,6 +11,7 @@ import com.epam.pablo.task01.model.Event;
 import com.fasterxml.jackson.databind.ObjectMapper;
 
 @Component
+@Profile("async")
 public class EventMessageListeners {
 
     Logger logger = LoggerFactory.getLogger(EventMessageListeners.class);

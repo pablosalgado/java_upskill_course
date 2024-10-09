@@ -8,10 +8,11 @@ The default configured database is PostgreSQL. Please create the database named 
 Execute the following commands to start the application:
 
 ```bash
+export SPRING_PROFILES_ACTIVE=dev,async
 activemq start
 cd task01
-mvn clean install
-mvn spring-boot:run
+mvn clean package
+java -jar target/task01-1.0.0.jar
 ```
 
 By default, the application is configured with an async profile that uses an ActiveMQ broker. The application will be available at:

@@ -5,10 +5,12 @@ import com.epam.pablo.task01.model.User;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springframework.context.annotation.Profile;
 import org.springframework.jms.annotation.JmsListener;
 import org.springframework.stereotype.Component;
 
 @Component
+@Profile("async")
 public class UserMessageListeners {
 
     Logger logger = LoggerFactory.getLogger(UserMessageListeners.class);

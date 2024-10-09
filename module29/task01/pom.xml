@@ -10,7 +10,7 @@
 	</parent>
 	<groupId>com.epam.pablo</groupId>
 	<artifactId>task01</artifactId>
-	<version>0.0.1-SNAPSHOT</version>
+	<version>1.0.0</version>
 	<name>task01</name>
 	<description>Demo project for Spring Boot</description>
 	<url/>
@@ -84,7 +84,11 @@
 			<groupId>org.apache.activemq</groupId>
 			<artifactId>activemq-broker</artifactId>
 		</dependency>
-	</dependencies>
+		<dependency>
+			<groupId>org.springframework.boot</groupId>
+			<artifactId>spring-boot-starter-webflux</artifactId>
+		</dependency>
+    </dependencies>
 
 	<build>
 		<plugins>
