@@ -5,17 +5,27 @@ The default configured database is PostgreSQL. Please create the database named 
 
 # Run the Application
 
-Execute the following commands to start the application:
+Execute the following commands to start the application in `async` mode. We are using the ActiveMQ broker instaled locally:
 
 ```bash
-export SPRING_PROFILES_ACTIVE=dev,async
-activemq start
 cd task01
+export SPRING_PROFILES_ACTIVE=dev,async
 mvn clean package
+brew services start activemq
 java -jar target/task01-1.0.0.jar
 ```
 
-By default, the application is configured with an async profile that uses an ActiveMQ broker. The application will be available at:
+Execute the following commands to start the application in `sync` mode:
+
+```bash
+cd task01
+export SPRING_PROFILES_ACTIVE=dev,sync
+mvn clean package
+brew services stop activemq
+java -jar target/task01-1.0.0.jar
+```
+
+The application will be available at:
 
 [http://localhost:8080](http://localhost:8080)
 

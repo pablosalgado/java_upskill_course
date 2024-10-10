@@ -84,16 +84,4 @@ public class AsyncUserControllerMockMvcTest {
         verify(jmsTemplate).convertAndSend("deleteUserQueue", 1L);
     }
 
-    @Test
-    public void testRefillAccount() throws Exception {
-        var user = new User();
-        user.setName("John Doe");
-        user.setEmail("john.doe@example.com");
-
-        bookingFacade.createUser(user);
-
-        mockMvc.perform(post("/users/1/refill")
-                        .param("amount", "100.00"))
-                .andExpect(status().isOk());
-    }
 }

@@ -52,7 +52,7 @@ public class ImportDataServiceImpl implements ImportDataService {
             throw new RuntimeException("Failed to load resource input stream", e);
         }
     }
-    
+
     @Override
     public void preloadTickets(MultipartFile file) {
         try {
@@ -61,14 +61,14 @@ public class ImportDataServiceImpl implements ImportDataService {
             throw new RuntimeException("Failed to load file input stream", e);
         }
     }
-    
+
     private void preloadTickets(InputStream inputStream) {
         logger.info("Starting to preload tickets from input stream");
 
         ticketRepository.deleteAll();
         eventRepository.deleteAll();
         userRepository.deleteAll();
-    
+
         TicketListWrapper wrapper = (TicketListWrapper) marshaller.unmarshal(new StreamSource(inputStream));
         List<Ticket> tickets = wrapper.getTickets();
 
@@ -89,12 +89,12 @@ public class ImportDataServiceImpl implements ImportDataService {
     }
 
     private User findOrSaveUser(User user, Map<String, User> userMap) {
-return userMap.computeIfAbsent(user.getEmail(), email -> {
-    User existingUser = userRepository.findByEmail(email);
-    return existingUser != null ? existingUser : userRepository.save(user);
-});
-}
-    
+        return userMap.computeIfAbsent(user.getEmail(), email -> {
+            User existingUser = userRepository.findByEmail(email);
+            return existingUser != null ? existingUser : userRepository.save(user);
+        });
+    }
+
     private Event findOrSaveEvent(Event event, Map<String, Event> eventMap) {
         return eventMap.computeIfAbsent(event.getTitle(), title -> {
             Event existingEvent = eventRepository.findByTitle(title);
